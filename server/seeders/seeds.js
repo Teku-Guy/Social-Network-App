@@ -9,7 +9,7 @@ db.once('open', async () => {
   const userData = [];
 
   //Create Users
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 5; i++) {
       const username = faker.internet.userName();
       const email = faker.internet.email();
 
