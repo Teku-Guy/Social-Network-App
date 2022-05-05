@@ -10,7 +10,10 @@ db.once('open', async () => {
 
   //Create Users
   for (let i = 0; i < 3; i++) {
-      
+      const username = faker.internet.userName();
+      const email = faker.internet.email();
+
+      userData.push({username, email});
   }
   await User.insertMany(userData);
 
