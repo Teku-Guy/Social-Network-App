@@ -9,21 +9,19 @@ const ReactionSchema = new Schema(
         type: Types.ObjectId,
         default: new Types.ObjectId()
       },
-      reactionBody: {
+      body: {
           type: String,
           required: true,
           //280 character maximum
           maxLength: [280, 'Max characters of 280 is allowed.']
       },
       //username
-      username: {
-          type: String,
-          required: true
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
       },
       createdAt: {
-          type: Date,
-          default: Date.now,
-          get: createdAtVal => dateFormat(createdAtVal)
+          type: String
       },
     },
     {

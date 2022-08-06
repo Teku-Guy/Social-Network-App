@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/graphql-library',
+  process.env.MONGODB_URI || 'mongodb://localhost/media-base',
   {
     // useNewUrlParser: true,
     // useUnifiedTopology: true,

@@ -4,7 +4,7 @@ const reactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema(
   {
-    thoughtText: {
+    body: {
       type: String,
       required: true,
       trim: true,
@@ -12,18 +12,19 @@ const ThoughtSchema = new Schema(
       minLength: [1, 'Must be between 1 and 280 characters'],
       maxLength: [280, 'Must be between 1 and 280 characters']
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
-    },
-    //username
-    username: {
-        type: String,
-        required: true
+    createdAt: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'users'
     },
     //import reactionSchema from reaction.js
-    reactions:[reactionSchema]
+    reactions:[reactionSchema],
+    likes: [
+      {
+        username: String,
+        createdAt: String
+      }
+    ]
   },
   {
     toJSON: {
