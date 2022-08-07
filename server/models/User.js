@@ -23,12 +23,12 @@ const UserSchema = new Schema(
     },
     createdAt: String,
     //friends model thru id
-    friends: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ]
+    // friends: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'User'
+    //     }
+    // ]
   },
   {
     toJSON: {
