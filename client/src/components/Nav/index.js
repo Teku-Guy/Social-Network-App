@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 function Nav() {
   const pathName = window.location.pathname;
   const path = pathName === '/' ? 'home' : pathName.substring(1);
-  console.log(path);
   
   const [activeItem, setActiveItem] = useState(path);
 

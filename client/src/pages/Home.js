@@ -1,5 +1,5 @@
 import React from "react";
-// import "../assets/home.scss";
+import { useQuery } from "@apollo/client";
 
 function Home() {
   return (

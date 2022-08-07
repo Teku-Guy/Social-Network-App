@@ -1,11 +1,11 @@
 import React from "react";
 // import "../assets/signup.scss";
 
-function SignUp() {
+function Register() {
 	return (
 		<div>
-			<h1>SignUp Page</h1>
+			<h1>Register Page</h1>
 		</div>
 	);
 }
-export default SignUp;
+export default Register;
