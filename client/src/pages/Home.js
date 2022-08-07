@@ -5,6 +5,9 @@ import { FETH_THOUGHTS_QUERY } from "../utils/queries";
 
 function Home() {
   const {loading, data} = useQuery(FETH_THOUGHTS_QUERY);
+
+  if (loading) return <div>Loading...</div>;
+  
   if(data){
     console.log(data);
   }
