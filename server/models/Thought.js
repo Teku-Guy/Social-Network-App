@@ -13,10 +13,7 @@ const ThoughtSchema = new Schema(
       maxLength: [280, 'Must be between 1 and 280 characters']
     },
     createdAt: String,
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'users'
-    },
+    username: String,
     //import reactionSchema from reaction.js
     reactions:[reactionSchema],
     likes: [
@@ -24,7 +21,11 @@ const ThoughtSchema = new Schema(
         username: String,
         createdAt: String
       }
-    ]
+    ],
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'users'
+    }
   },
   {
     toJSON: {

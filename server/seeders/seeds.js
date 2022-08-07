@@ -12,8 +12,9 @@ db.once('open', async () => {
   for (let i = 0; i < 5; i++) {
       const username = faker.internet.userName();
       const email = faker.internet.email();
+      const password = "test123";
 
-      userData.push({username, email});
+      userData.push({username, email, password});
   }
   await User.insertMany(userData);
 

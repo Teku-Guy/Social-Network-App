@@ -4,11 +4,6 @@ const dateFormat = require('../utils/dateFormat');
 //Reaction Schema
 const ReactionSchema = new Schema(
     {
-      reactionId: {
-        //object id with mongodb
-        type: Types.ObjectId,
-        default: new Types.ObjectId()
-      },
       body: {
           type: String,
           required: true,
@@ -16,10 +11,7 @@ const ReactionSchema = new Schema(
           maxLength: [280, 'Max characters of 280 is allowed.']
       },
       //username
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-      },
+      username: String,
       createdAt: {
           type: String
       },
@@ -27,8 +19,7 @@ const ReactionSchema = new Schema(
     {
       toJSON: {
           getters: true
-      },
-      id: false
+      }
     }    
 );
 

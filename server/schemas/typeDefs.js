@@ -7,7 +7,8 @@ const typeDefs = gql`
         email: String!
         thoughts: [Thought]
         friends: [User]
-        password: String!
+        token: String!
+        createdAt: String
     }
     type Thought{
         _id: ID!
@@ -51,9 +52,9 @@ const typeDefs = gql`
 
     type Mutation{
         register(registerInput: RegisterInput): Auth!
-        login(email: String!, password: String!): Auth
+        login(username: String!, password: String!): Auth
         destroyUser(email: String!): User
-        addThought(thoughtText: String!, username: String!): Thought
+        addThought(body: String!, user: String!): Thought
         destroyThought(thought_id: Int): Thought
         addFriend(user_id: Int): User
         removeFriend(user_id: Int): User
