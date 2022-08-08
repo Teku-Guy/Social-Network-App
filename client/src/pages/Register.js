@@ -1,10 +1,12 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form } from "semantic-ui-react";
 
 import { REGISTER_USER } from "../utils/mutations";
 
 function Register(props) {
+	const navigate = useNavigate();
 	const [errors, setErrors] = useState({});
 	const [values, setValues] = useState({
 		username: '',
@@ -20,7 +22,7 @@ function Register(props) {
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
 		update(_, result){
 			console.log(result);
-			props.history.push('/');
+			navigate(`/`);
 		},
 		onError(err){
 			setErrors(err.graphQLErrors[0].extensions.exception.errors);
