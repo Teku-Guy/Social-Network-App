@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const FETH_THOUGHTS_QUERY = gql`
   {
-    getThoughts{
+    getThoughts {
       id
       body
       createdAt
