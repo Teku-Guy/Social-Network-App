@@ -4,6 +4,7 @@ import { Button, Form } from "semantic-ui-react";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";
+import Auth from '../utils/auth';
 
 function Register() {
 
@@ -16,8 +17,8 @@ function Register() {
   });
 
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
-		update(_, result){
-			window.location.assign('/');
+		update(_, { data: { register: {userData: token} }}){
+      Auth.login(token);
 		},
 		onError(err){
 			setErrors(err.graphQLErrors[0].extensions.errors);

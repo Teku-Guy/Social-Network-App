@@ -16,17 +16,15 @@ function Login(props) {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, result
-      // {
-      //   data: { login: userData }
-      // }
+    update(_, 
+      {
+        data
+      }
     ) {
-			//console.log(result);
-      Auth.login(result.data.login.token);
-			window.location.assign('/');
+			console.log(data.login.token)
+      Auth.login(data.login.token);
     },
     onError(err) {
-			console.log(err.graphQLErrors[0].extensions.errors);
 			setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values
