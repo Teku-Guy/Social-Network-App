@@ -40,12 +40,18 @@ export const CREATE_POST_MUTATION = gql`
       id
       body
       createdAt
-      username
-      likes{
+      username 
+      likeCount
+      likes {
+        username
+      }
+      reactionCount
+      reactions{
         id
         username
         createdAt
+        body
       }
-      reactionCount
+    }
   }
 `

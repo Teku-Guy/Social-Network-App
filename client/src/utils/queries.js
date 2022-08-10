@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const FETH_THOUGHTS_QUERY = gql`
+export const FETCH_THOUGHTS_QUERY = gql`
   {
     getThoughts {
       id

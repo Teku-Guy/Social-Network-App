@@ -12,18 +12,10 @@
       "build": "cd client && npm run build"
     },
     "keywords": [],
-    "author": "",
+    "author": "https://github.com/Teku-Guy/",
     "license": "ISC",
     "devDependencies": {
       "concurrently": "^5.1.0"
     },
-    "dependencies": {
-      "@date-io/date-fns": "^2.11.0",
-      "@material-ui/core": "^4.12.3",
-      "@material-ui/lab": "^4.0.0-alpha.60",
-      "@mui/lab": "^5.0.0-alpha.47",
-      "bootstrap": "^5.1.0",
-      "react-bootstrap": "^2.0.0-beta.6"
-    },
-    "homepage": ""
+    "homepage": "https://github.com/Teku-Guy/Social-Network-App#readme"
   }

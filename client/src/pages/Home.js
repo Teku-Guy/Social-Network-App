@@ -1,16 +1,20 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { Grid } from "semantic-ui-react";
+import { Grid, Transition } from "semantic-ui-react";
 
 import PostCard from "../components/PostCard";
-import { FETH_THOUGHTS_QUERY } from "../utils/queries";
+import { FETCH_THOUGHTS_QUERY } from "../utils/queries";
 import Auth from "../utils/auth";
+import PostForm from "../components/PostForm";
 
 function Home() {
-  const {data: { username, email, id}} = Auth.getProfile();
-  console.log(id);
+  const user = Auth.loggedIn();
+  if(user){
+    const {data: { username, email, id}} = Auth.getProfile();
+    console.log(id);
+  }
 
-  const { loading, data } = useQuery(FETH_THOUGHTS_QUERY);
+  const { loading, data } = useQuery(FETCH_THOUGHTS_QUERY);
   const { getThoughts: thoughts } = {...data}
   console.log(thoughts)
 
@@ -21,15 +25,24 @@ function Home() {
         <h1>Recent Posts</h1>
       </Grid.Row>
       <Grid.Row>
+        {user && (
+          <Grid.Column>
+            <PostForm />
+          </Grid.Column>
+        )}
         {loading ? (
           <h1>Loading posts..</h1>
         ) : (
-          thoughts &&
-          thoughts.map((thought) => (
-            <Grid.Column key={thought.id} style={{ marginBottom: 20 }}>
-              <PostCard post={thought} />
-            </Grid.Column>
-          ))
+          <Transition.Group>
+            {
+              thoughts &&
+              thoughts.map((thought) => (
+                <Grid.Column key={thought.id} style={{ marginBottom: 20 }}>
+                  <PostCard post={thought} />
+                </Grid.Column>
+              ))
+            }
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>
