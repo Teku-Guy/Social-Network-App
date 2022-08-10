@@ -33,3 +33,19 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CREATE_POST_MUTATION = gql`
+  mutation addThought($body: String!) {
+    addThought(body: $body) {
+      id
+      body
+      createdAt
+      username
+      likes{
+        id
+        username
+        createdAt
+      }
+      reactionCount
+  }
+`

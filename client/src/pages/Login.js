@@ -7,6 +7,10 @@ import { useForm } from "../utils/helpers";
 import Auth from '../utils/auth';
 
 function Login(props) {
+	const user = Auth.loggedIn();
+	if(user){
+		window.location.assign('/');
+	}
 
   const [errors, setErrors] = useState({});
 

@@ -4,9 +4,12 @@ import { Grid } from "semantic-ui-react";
 
 import PostCard from "../components/PostCard";
 import { FETH_THOUGHTS_QUERY } from "../utils/queries";
+import Auth from "../utils/auth";
 
 function Home() {
-  
+  const {data: { username, email, id}} = Auth.getProfile();
+  console.log(id);
+
   const { loading, data } = useQuery(FETH_THOUGHTS_QUERY);
   const { getThoughts: thoughts } = {...data}
   console.log(thoughts)
