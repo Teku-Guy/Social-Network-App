@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server-express')
 
 const { User, Thought }= require('../models');
 const { signToken } = require('../utils/auth');
+const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
 
 const resolvers = { 
   Query: { 
@@ -28,8 +29,17 @@ const resolvers = {
   Mutation: {
     //create user data
     register: async (parents, {
-      registerInput: { username, email, password, confirmPassword}
+      registerInput: { username, email, password}
     }, context) => {
+      // Validate user data
+      const { valid, errors } = validateRegisterInput(
+        username,
+        email,
+        password
+      );
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
       const checkUser = await User.findOne({username});
       if(checkUser){
         throw new UserInputError('Username is taken', {
@@ -48,14 +58,23 @@ const resolvers = {
 
     login: async (_, {username, password}) => {
       //check if username already exists
+      const { errors, valid } = validateLoginInput(username, password); 
+
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
+
       const user = await User.findOne({username});
-      if(!user){
-        throw new AuthenticationError('Username not found')
+
+      if (!user) {
+        errors.general = 'User not found';
+        throw new UserInputError('User not found', { errors });
       }
       //check if password matches
       const match = await user.isCorrectPassword(password);
-      if(!match){
-        throw new AuthenticationError('Incorrect password')
+      if (!match) {
+        errors.general = 'Wrong crendetials';
+        throw new UserInputError('Wrong crendetials', { errors });
       }
 
       const token = signToken(user);

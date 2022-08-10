@@ -41,6 +41,11 @@ ThoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
 
+ThoughtSchema.virtual('likeCount').get(function() {
+  //returns reaction couunt
+  return this.likes.length;
+});
+
 const Thought = model('Thought', ThoughtSchema);
 
 module.exports = Thought;

@@ -9,6 +9,7 @@
     "seed": "node seeders/seeds.js"
   },
   "dependencies": {
+    "@apollo/utils.keyvaluecache": "^1.0.1",
     "apollo-server-express": "^3.6.7",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",

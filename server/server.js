@@ -4,6 +4,7 @@ const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
 const db = require('./config/connection');
 const path = require('path');
+const {InMemoryLRUCache} = require('@apollo/utils.keyvaluecache');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -11,7 +12,8 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware
+  context: authMiddleware,
+  cache: new InMemoryLRUCache(),
 });
 
 server.start().then(() => {
