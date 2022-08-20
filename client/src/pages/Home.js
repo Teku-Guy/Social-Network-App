@@ -9,10 +9,6 @@ import PostForm from "../components/PostForm";
 
 function Home() {
   const user = Auth.loggedIn();
-  if(user){
-    const {data: { username, email, id}} = Auth.getProfile();
-    console.log(id);
-  }
 
   const { loading, data } = useQuery(FETCH_THOUGHTS_QUERY);
   const { getThoughts: thoughts } = {...data}

@@ -54,4 +54,17 @@ export const CREATE_POST_MUTATION = gql`
       }
     }
   }
-`
+`;
+
+export const LIKE_POST_MUTATION = gql`
+  mutation likeThought($thoughtId: ID!){
+    likeThought(thoughtId: $thoughtId){
+      id
+      likes{
+        id
+        username
+      }
+      likeCount
+    }
+  }
+`;
