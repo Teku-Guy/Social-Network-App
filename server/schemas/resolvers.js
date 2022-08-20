@@ -129,7 +129,6 @@ const resolvers = {
 
         const thoughtData = await Thought.findById(thoughtId);
         const {username} = context.user;
-        console.log(username);
 
         if(thoughtData) {
           thoughtData.reactions.unshift({

@@ -3,9 +3,13 @@ import { Card, Button, Icon, Label, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
+import Auth from '../../utils/auth';
+
 function PostCard({
   post: { body, createdAt, id, username, likeCount, reactionCount, likes }
 }) {
+
+  const {data: user} = Auth.getProfile();
 
   function likePost(){
     console.log("liked")
@@ -32,7 +36,7 @@ function PostCard({
           {likeCount}
         </Label>
       </Button>
-      <Button as='div' labelPosition='right' onClick={reactToPost}>
+      <Button as='div' labelPosition='right' as={Link} to={`/posts/${id}`}>
         <Button color='blue' basic>
           <Icon name='comments' />
         </Button>
@@ -40,6 +44,11 @@ function PostCard({
           {reactionCount}
         </Label>
       </Button>
+      {user && user.username === username && (
+        <Button as="div" color="red" floated="right" onClick={()=> console.log('Delete Post')}>
+          <Icon name="trash" style={{ margin: 0 }} />
+        </Button>
+      )}
       </Card.Content>
     </Card>
   )

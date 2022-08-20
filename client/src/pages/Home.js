@@ -16,7 +16,6 @@ function Home() {
 
   const { loading, data } = useQuery(FETCH_THOUGHTS_QUERY);
   const { getThoughts: thoughts } = {...data}
-  console.log(thoughts)
 
 
   return (
