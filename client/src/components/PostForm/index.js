@@ -18,8 +18,6 @@ function PostForm(props) {
       const data = proxy.readQuery({
         query: FETCH_THOUGHTS_QUERY
       });
-      console.log(result.data)
-      console.log(data)
       proxy.writeQuery({ query: FETCH_THOUGHTS_QUERY, data: { getThoughts: [result.data.addThought, ...data.getThoughts]}});
       values.body = '';
     }
