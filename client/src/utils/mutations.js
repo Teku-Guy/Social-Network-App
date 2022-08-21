@@ -74,3 +74,34 @@ export const DELETE_POST_MUTATION = gql`
     deleteThought(thoughtId: $thoughtId)
   }
 `;
+
+export const SUBMIT_REACTION_MUTATION = gql`
+  mutation createReaction($thoughtId: ID!, $body: String!){
+    createReaction( thoughtId: $thoughtId, body: $body){
+      id
+      reactions{
+        id
+        username
+        createdAt
+        body
+      }
+      reactionCount
+    }
+  }
+  
+`;
+
+export const DELETE_REACTION_MUTATION = gql`
+  mutation deleteReaction($thoughtId: ID!, $reactionId: ID!) {
+    deleteReaction(thoughtId: $thoughtId, reactionId: $reactionId){
+      id
+      reactions{
+        id
+        username
+        createdAt
+        body
+      }
+      reactionCount
+    }
+  }
+`;

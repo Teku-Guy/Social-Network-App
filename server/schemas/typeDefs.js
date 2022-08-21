@@ -56,7 +56,7 @@ const typeDefs = gql`
 		destroyUser(email: String!): User!
 		addThought(body: String!): Thought!
 		deleteThought(thoughtId: ID): String!
-		createReaction(thoughtId: String!, body: String!): Thought!
+		createReaction(thoughtId: ID!, body: String!): Thought!
 		deleteReaction(thoughtId: ID!, reactionId: ID!): Thought!
 		likeThought(thoughtId: ID!): Thought!
 		addFriend(user_id: Int): User!
