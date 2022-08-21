@@ -1,31 +1,47 @@
 import React from "react";
+import { useParams } from 'react-router';
 import { useQuery } from "@apollo/client";
 import { Button, Card, Grid, Icon, Image, Label } from "semantic-ui-react";
 import moment from 'moment';
 
 import { FETCH_THOUGHT_QUERY } from "../utils/queries";
-import LikeButton from "../components/LikeButton";
 import Auth from "../utils/auth";
+import LikeButton from '../components/LikeButton';
+import DeleteButton from '../components/DeleteButton';
 
-function SingleThought(props) {
-
+function SignleThought(props) {
   const {data: user} = Auth.getProfile();
 
-
-  const thoughtId= props.match.params.thoughtId;
+  const { thoughtId } = useParams();
+  //const thoughtId= props.match.params.thoughtId;
   console.log(thoughtId)
 
-  const {data: { getThought }} = useQuery(FETCH_THOUGHT_QUERY, {
+  const { data:  getThought } = useQuery(FETCH_THOUGHT_QUERY, {
     variables: {
       thoughtId
     }
-  })
+  });
+  
+  function deleteThoughtCallback(){
+    window.location.assign('/');
+  };
 
   let postMarkup;
   if(!getThought){
     postMarkup = <p>Loading Thought..</p>
   } else {
-    const { id, body, createdAt, username, reactions, likes, likeCount, reactionCount } = getThought;
+    const {
+      getThought: {
+        id,
+        body,
+        createdAt,
+        username,
+        reactions,
+        likes,
+        likeCount,
+        reactionCount
+      }
+    } = getThought;
 
 
     postMarkup = (
@@ -52,6 +68,9 @@ function SingleThought(props) {
                     {reactionCount}
                   </Label>
                 </Button>
+                {user && user.username && username && (
+                  <DeleteButton thoughtId={id} callback={deleteThoughtCallback}/>
+                )}
               </Card.Content>
             </Card>
           </Grid.Column>
@@ -63,4 +82,4 @@ function SingleThought(props) {
   return postMarkup;
 }
 
-export default SingleThought;
+export default SignleThought;

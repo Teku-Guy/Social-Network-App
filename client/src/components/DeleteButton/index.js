@@ -4,13 +4,14 @@ import { useMutation } from '@apollo/client';
 
 import { DELETE_POST_MUTATION } from '../../utils/mutations';
 
-function DeleteButton({ thoughtId }) {
+function DeleteButton({ thoughtId, callback }) {
   const [confirmOpen, setConfirmOpen]= useState(false);
 
   const [deletePost] = useMutation(DELETE_POST_MUTATION, {
     update(){
       setConfirmOpen(false);
       // TODO:remove from cache
+      if(callback) callback();
     },
     variables: {
       thoughtId

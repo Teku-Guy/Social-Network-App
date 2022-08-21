@@ -18,12 +18,12 @@ function PostCard({
       <Card.Content>
         <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/large/molly.png' />
         <Card.Header>{username}</Card.Header>
-        <Card.Meta as={Link} to={`/post/${id}`}>{moment(createdAt).fromNow(true)}</Card.Meta>
+        <Card.Meta as={Link} to={`/thoughts/${id}`}>{moment(createdAt).fromNow(true)}</Card.Meta>
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
       <LikeButton user={user} post={{id, likes, likeCount }} />
-      <Button labelPosition='right' as={Link} to={`/posts/${id}`}>
+      <Button labelPosition='right' as={Link} to={`/thoughts/${id}`}>
         <Button color='blue' basic >
           <Icon name='comments' />
         </Button>
