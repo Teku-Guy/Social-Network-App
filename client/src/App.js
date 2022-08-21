@@ -17,9 +17,10 @@ import { Container } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './App.css'
 
-import Home from "../../client/src/pages/Home";
-import Login from "../../client/src/pages/Login";
-import Register from "../../client/src/pages/Register";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import SingleThought from "./pages/SingleThought";
 import Nav from "./components/Nav";
 
 const httpLink = createHttpLink({
@@ -49,6 +50,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
+            <Route exact path="/thoughts/:thoughtId" components={SingleThought} />
           </Routes>
         </Container>
       </Router>
