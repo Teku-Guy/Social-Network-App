@@ -4,52 +4,52 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Button, Card, Form, Grid, Icon, Image, Label } from "semantic-ui-react";
 import moment from 'moment';
 
-import { FETCH_THOUGHT_QUERY } from "../utils/queries";
-import { SUBMIT_REACTION_MUTATION } from "../utils/mutations";
+import { FETCH_POST_QUERY } from "../utils/queries";
+import { SUBMIT_COMMENT_MUTATION } from "../utils/mutations";
 import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 
-function SignleThought(props) {
+function SinglePost(props) {
   const {data: user} = Auth.getProfile();
-  const { thoughtId } = useParams();
-  const [reaction, setReaction] = useState('');
-  const { data:  getThought } = useQuery(FETCH_THOUGHT_QUERY, {
+  const { postId } = useParams();
+  const [comment, setComment] = useState('');
+  const { data:  getPost } = useQuery(FETCH_POST_QUERY, {
     variables: {
-      thoughtId
+      postId
     }
   });
 
-  const [submitReaction] = useMutation(SUBMIT_REACTION_MUTATION, {
+  const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
     update(){
-      setReaction('');
+      setComment('');
     },
     variables: {
-      thoughtId,
-      body: reaction
+      postId,
+      body: comment
     }
   })
   
-  function deleteThoughtCallback(){
+  function deletePostCallback(){
     window.location.assign('/');
   };
 
   let postMarkup;
-  if(!getThought){
-    postMarkup = <p>Loading Thought..</p>
+  if(!getPost){
+    postMarkup = <p>Loading Post..</p>
   } else {
     const {
-      getThought: {
+      getPost: {
         id,
         body,
         createdAt,
         username,
-        reactions,
+        comments,
         likes,
         likeCount,
-        reactionCount
+        commentCount
       }
-    } = getThought;
+    } = getPost;
 
     postMarkup = (
       <Grid>
@@ -67,16 +67,16 @@ function SignleThought(props) {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{id, likes, likeCount }} />
-                <Button as="div" labelPosition="right" onClick={() => console.log('Comment on thought')}>
+                <Button as="div" labelPosition="right" onClick={() => console.log('Comment on Post')}>
                   <Button basic color="blue">
                     <Icon name="comments" />
                   </Button>
                   <Label basic color="blue" pointing="left">
-                    {reactionCount}
+                    {commentCount}
                   </Label>
                 </Button>
                 {user && user.username === username && (
-                  <DeleteButton thoughtId={id} callback={deleteThoughtCallback}/>
+                  <DeleteButton postId={id} callback={deletePostCallback}/>
                 )}
               </Card.Content>
             </Card>
@@ -88,13 +88,13 @@ function SignleThought(props) {
                     <div className="ui action input fluid">
                       <input type="text" placeholder="Comment.."
                         name="comment"
-                        value={reaction}
-                        onChange={event => setReaction(event.target.value)}
+                        value={comment}
+                        onChange={(event) => setComment(event.target.value)}
                       />
                       <button type="submit"
                         className="ui button teal"
-                        disabled={reaction.trim() === ''}
-                        onClick={submitReaction}
+                        disabled={comment.trim() === ''}
+                        onClick={submitComment}
                       >
                         Submit
                       </button>
@@ -103,15 +103,15 @@ function SignleThought(props) {
                 </Card.Content>
               </Card>
             )}
-            {reactions.map(reaction => (
-              <Card fluid key={reaction.id}>
+            {comments.map((comment) => (
+              <Card fluid key={comment.id}>
                 <Card.Content>
-                  {user && user.username === reaction.username && (
-                    <DeleteButton thoughtId={id} reactionId={reaction.id} />
+                  {user && user.username === comment.username && (
+                    <DeleteButton postId={id} commentId={comment.id} />
                   )}
-                  <Card.Header>{reaction.username}</Card.Header>
-                  <Card.Meta>{moment(reaction.createdAt).fromNow()}</Card.Meta>
-                  <Card.Description>{reaction.body}</Card.Description>
+                  <Card.Header>{comment.username}</Card.Header>
+                  <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
+                  <Card.Description>{comment.body}</Card.Description>
                 </Card.Content>
               </Card>
             ))}
@@ -124,4 +124,4 @@ function SignleThought(props) {
   return postMarkup;
 }
 
-export default SignleThought;
+export default SinglePost;

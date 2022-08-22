@@ -2,17 +2,15 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { Grid, Transition } from "semantic-ui-react";
 
+import { FETCH_ALL_POSTS_QUERY } from "../utils/queries";
 import PostCard from "../components/PostCard";
-import { FETCH_THOUGHTS_QUERY } from "../utils/queries";
 import Auth from "../utils/auth";
 import PostForm from "../components/PostForm";
 
 function Home() {
   const user = Auth.loggedIn();
-
-  const { loading, data } = useQuery(FETCH_THOUGHTS_QUERY);
-  const { getThoughts: thoughts } = {...data}
-
+  const { loading, data } = useQuery(FETCH_ALL_POSTS_QUERY);
+  const { getPosts: posts } = {...data}
 
   return (
     <Grid columns={3}>
@@ -30,10 +28,10 @@ function Home() {
         ) : (
           <Transition.Group>
             {
-              thoughts &&
-              thoughts.map((thought) => (
-                <Grid.Column key={thought.id} style={{ marginBottom: 20 }}>
-                  <PostCard post={thought} />
+              posts &&
+              posts.map((post) => (
+                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                  <PostCard post={post} />
                 </Grid.Column>
               ))
             }

@@ -7,7 +7,6 @@ import { LIKE_POST_MUTATION } from '../../utils/mutations';
 
 function LikeButton( { user, post: { id, likeCount, likes}} ){
   const [liked, setLiked] = useState(false);
-  console.log(user);
   useEffect(() => {
     if(user && likes.find(like => like.username === user.username)){
       setLiked(true)
@@ -15,7 +14,7 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
   }, [user, likes]);
 
   const [likePost] = useMutation(LIKE_POST_MUTATION, {
-    variables: {thoughtId: id}
+    variables: {postId: id}
   })
 
 

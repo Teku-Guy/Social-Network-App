@@ -1,6 +1,6 @@
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
 
-const { User, Thought }= require('../models');
+const { User, Post }= require('../models');
 const { signToken } = require('../utils/auth');
 const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
 
@@ -14,16 +14,16 @@ const resolvers = {
       const userData = await User.findOne({'username': args.username});
       return userData;
     },
-    getThoughts: async(parent, args, context) => {
-      const thoughtsData = await Thought.find().sort({ createdAt: -1});
-      return thoughtsData;
+    getPosts: async(parent, args, context) => {
+      const postsData = await Post.find().sort({ createdAt: -1});
+      return postsData;
     },
-    getThought: async (parent, {thoughtId}, context) => {
-      const thoughtData = await Thought.findById(thoughtId);
-      if(!thoughtData){
+    getPost: async (parent, {postId}, context) => {
+      const postData = await Post.findById(postId);
+      if(!postData){
         throw new Error('Post not found');
       }
-      return thoughtData;
+      return postData;
     }
   },
   Mutation: {
@@ -85,31 +85,31 @@ const resolvers = {
       //todo delete user
     },
 
-    addThought: async (parents, { body, username }, context) => {
+    addPost: async (parents, { body, username }, context) => {
       if(context.user){
         if(body.trim() === ''){
           throw new Error('Body must not be empty');
         }
   
-        const newThought = new Thought({
+        const newPost = new Post({
           body,
           user: context.user.id,
           username: context.user.username,
           createdAt: new Date().toISOString()
         });
   
-        const thought = await newThought.save();
+        const post = await newPost.save();
   
-        return thought;
+        return post;
       } 
       throw new AuthenticationError('Not Authenticated!');
     },
     
-    deleteThought: async (parents, { thoughtId }, context) => {
+    deletePost: async (parents, { postId }, context) => {
       if(context.user){
-        const thoughtData = await Thought.findById(thoughtId);
-        if(context.user.username === thoughtData.username){
-          await thoughtData.delete();
+        const postData = await Post.findById(postId);
+        if(context.user.username === postData.username){
+          await postData.delete();
           return 'Post deleted successfully';
         } else {
           throw new AuthenticationError('Action not allowed');
@@ -117,68 +117,68 @@ const resolvers = {
       }
       throw new AuthenticationError('Invalid Token');
     },
-    createReaction: async(_, { thoughtId, body }, context) => {
+    submitComment: async(_, { postId, body }, context) => {
       if(context.user){
         if (body.trim() === '') {
-          throw new UserInputError('Empty reaction', {
+          throw new UserInputError('Empty Comment', {
             errors: {
               body: 'Body must not empty'
             }
           });
         }
 
-        const thoughtData = await Thought.findById(thoughtId);
+        const comData = await Post.findById(postId);
         const {username} = context.user;
 
-        if(thoughtData) {
-          thoughtData.reactions.unshift({
+        if(comData) {
+          comData.comments.unshift({
             body,
             username,
             createdAt: new Date().toISOString()
           });
-          await thoughtData.save();
-          return thoughtData;
+          await comData.save();
+          return comData;
         } else throw new UserInputError('Post not found');
       }
       throw new AuthenticationError('Not Authenticated!')
     },
-    deleteReaction: async(_, { thoughtId, reactionId }, context) => {
+    deleteComment: async(_, { postId, commentId }, context) => {
       if(context.user){
         const {username} = context.user;
-        const thoughtData = await Thought.findById(thoughtId);
+        const comData = await Post.findById(postId);
 
-        if(thoughtData){
-          const reactionIndex = thoughtData.reactions.findIndex(r => r.id === reactionId);
+        if(comData){
+          const comIndex = comData.comments.findIndex(c => c.id === commentId);
 
-          if(thoughtData.reactions[reactionIndex].username === username){
-            thoughtData.reactions.splice(reactionIndex, 1);
-            await thoughtData.save();
-            return thoughtData;
+          if(comData.comments[comIndex].username === username){
+            comData.comments.splice(comIndex, 1);
+            await comData.save();
+            return comData;
           } else throw new AuthenticationError('Action Not Allowed!')
         }
-        throw new UserInputError('Reaction not found');
+        throw new UserInputError('Comment not found');
       }
       throw new AuthenticationError('Not Authenticated!')
     },
-    likeThought: async(_, { thoughtId }, context) => {
+    likePost: async(_, { postId }, context) => {
       if(context.user){
         const { username } = context.user;
-        const thoughtData = await Thought.findById(thoughtId);
-        if(thoughtData){
-          if(thoughtData.likes.find(like => like.username === username )){
+        const postData = await Post.findById(postId);
+        if(postData){
+          if(postData.likes.find(like => like.username === username )){
             // Post already likes, unlike it
-            thoughtData.likes = thoughtData.likes.filter((like) => like.username !== username);
+            postData.likes = postData.likes.filter((like) => like.username !== username);
           } else {
             // Not liked, like post
-            thoughtData.likes.push({
+            postData.likes.push({
               username,
               createdAt: new Date().toISOString()
             });
           }
 
-          await thoughtData.save();
-          return thoughtData;
-        } else throw new UserInputError('Thought not found');
+          await postData.save();
+          return postData;
+        } else throw new UserInputError('Post not found');
       }
       throw new AuthenticationError('Not Authenticated!')
     },

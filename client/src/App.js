@@ -20,7 +20,7 @@ import './App.css'
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import SignleThought from "./pages/SingleThought";
+import SinglePost from "./pages/SinglePost";
 import Nav from "./components/Nav";
 
 const httpLink = createHttpLink({
@@ -50,7 +50,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
-            <Route exact path="/thoughts/:thoughtId" element={<SignleThought />} />
+            <Route exact path="/posts/:postId" element={<SinglePost />} />
           </Routes>
         </Container>
       </Router>

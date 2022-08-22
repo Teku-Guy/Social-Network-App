@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const FETCH_THOUGHTS_QUERY = gql`
+export const FETCH_ALL_POSTS_QUERY = gql`
   {
-    getThoughts {
+    getPosts {
       id
       body
       createdAt
@@ -11,8 +11,8 @@ export const FETCH_THOUGHTS_QUERY = gql`
       likes {
         username
       }
-      reactionCount
-      reactions{
+      commentCount
+      comments{
         id
         username
         createdAt
@@ -22,9 +22,9 @@ export const FETCH_THOUGHTS_QUERY = gql`
   }
 `;
 
-export const FETCH_THOUGHT_QUERY = gql`
-  query($thoughtId: ID!){
-    getThought(thoughtId: $thoughtId){
+export const FETCH_POST_QUERY = gql`
+  query($postId: ID!){
+    getPost(postId: $postId){
       id
       body
       createdAt
@@ -33,8 +33,8 @@ export const FETCH_THOUGHT_QUERY = gql`
       likes{
         username
       }
-      reactionCount
-      reactions{
+      commentCount
+      comments{
         id
         username
         createdAt

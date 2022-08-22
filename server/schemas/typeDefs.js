@@ -5,22 +5,22 @@ const typeDefs = gql`
 		id: ID!
 		username: String!
 		email: String!
-		thoughts: [Thought]
+		posts: [Post]
 		friends: [User]
 		token: String!
 		createdAt: String
 	}
-	type Thought{
+	type Post{
 		id: ID!
 		body: String!
 		createdAt: String!
 		username: String!
-		reactions: [Reaction]!
+		comments: [Comment]!
 		likes: [Like]!
 		likeCount: Int!
-		reactionCount: Int!
+		commentCount: Int!
 	}
-	type Reaction {
+	type Comment {
 		id: ID!
 		body: String!
 		username: String!
@@ -39,8 +39,8 @@ const typeDefs = gql`
 
 	type Query{
 		users: [User]
-		getThoughts: [Thought]
-		getThought(thoughtId: ID!): Thought
+		getPosts: [Post]
+		getPost(postId: ID!): Post
 		user(userId: ID, username: String): User
 	}
 	
@@ -54,11 +54,11 @@ const typeDefs = gql`
 		register(registerInput: RegisterInput): Auth!
 		login(username: String!, password: String!): Auth!
 		destroyUser(email: String!): User!
-		addThought(body: String!): Thought!
-		deleteThought(thoughtId: ID): String!
-		createReaction(thoughtId: ID!, body: String!): Thought!
-		deleteReaction(thoughtId: ID!, reactionId: ID!): Thought!
-		likeThought(thoughtId: ID!): Thought!
+		addPost(body: String!): Post!
+		deletePost(postId: ID): String!
+		submitComment(postId: ID!, body: String!): Post!
+		deleteComment(postId: ID!, commentId: ID!): Post!
+		likePost(postId: ID!): Post!
 		addFriend(user_id: Int): User!
 		removeFriend(user_id: Int): User!
 	}

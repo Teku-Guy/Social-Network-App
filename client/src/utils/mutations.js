@@ -35,8 +35,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_POST_MUTATION = gql`
-  mutation addThought($body: String!) {
-    addThought(body: $body) {
+  mutation addPost($body: String!) {
+    addPost(body: $body) {
       id
       body
       createdAt
@@ -45,8 +45,8 @@ export const CREATE_POST_MUTATION = gql`
       likes {
         username
       }
-      reactionCount
-      reactions{
+      commentCount
+      comments{
         id
         username
         createdAt
@@ -57,8 +57,8 @@ export const CREATE_POST_MUTATION = gql`
 `;
 
 export const LIKE_POST_MUTATION = gql`
-  mutation likeThought($thoughtId: ID!){
-    likeThought(thoughtId: $thoughtId){
+  mutation likePost($postId: ID!){
+    likePost(postId: $postId){
       id
       likes{
         id
@@ -70,38 +70,38 @@ export const LIKE_POST_MUTATION = gql`
 `;
 
 export const DELETE_POST_MUTATION = gql`
-  mutation deleteThought($thoughtId: ID!){
-    deleteThought(thoughtId: $thoughtId)
+  mutation deletePost($postId: ID!){
+    deletePost(postId: $postId)
   }
 `;
 
-export const SUBMIT_REACTION_MUTATION = gql`
-  mutation createReaction($thoughtId: ID!, $body: String!){
-    createReaction( thoughtId: $thoughtId, body: $body){
+export const SUBMIT_COMMENT_MUTATION = gql`
+  mutation submitComment($postId: ID!, $body: String!){
+    submitComment(postId: $postId, body: $body){
       id
-      reactions{
+      comments{
         id
         username
         createdAt
         body
       }
-      reactionCount
+      commentCount
     }
   }
   
 `;
 
 export const DELETE_REACTION_MUTATION = gql`
-  mutation deleteReaction($thoughtId: ID!, $reactionId: ID!) {
-    deleteReaction(thoughtId: $thoughtId, reactionId: $reactionId){
+  mutation deleteComment($postId: ID!, $commentId: ID!) {
+    deleteComment(postId: $postId, commentId: $commentId){
       id
-      reactions{
+      comments{
         id
         username
         createdAt
         body
       }
-      reactionCount
+      commentCount
     }
   }
 `;

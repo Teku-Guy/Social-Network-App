@@ -1,8 +1,7 @@
 const { Schema, model } = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
-const reactionSchema = require('./Reaction');
+const commentSchema = require('./Comment');
 
-const ThoughtSchema = new Schema(
+const PostSchema = new Schema(
   {
     body: {
       type: String,
@@ -15,7 +14,7 @@ const ThoughtSchema = new Schema(
     createdAt: String,
     username: String,
     //import reactionSchema from reaction.js
-    reactions:[reactionSchema],
+    comments:[commentSchema],
     likes: [
       {
         username: String,
@@ -36,16 +35,16 @@ const ThoughtSchema = new Schema(
 );
 
 //Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
-ThoughtSchema.virtual('reactionCount').get(function() {
+PostSchema.virtual('commentCount').get(function() {
     //returns reaction couunt
-    return this.reactions.length;
+    return this.comments.length;
 });
 
-ThoughtSchema.virtual('likeCount').get(function() {
+PostSchema.virtual('likeCount').get(function() {
   //returns reaction couunt
   return this.likes.length;
 });
 
-const Thought = model('Thought', ThoughtSchema);
+const Post = model('Post', PostSchema);
 
-module.exports = Thought;
+module.exports = Post;

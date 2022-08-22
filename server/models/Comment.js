@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require('mongoose');
 
-//Reaction Schema
-const ReactionSchema = new Schema(
+//Comment Schema
+const CommentSchema = new Schema(
     {
       body: {
           type: String,
@@ -22,4 +22,4 @@ const ReactionSchema = new Schema(
     }    
 );
 
-module.exports = ReactionSchema;
+module.exports = CommentSchema;
