@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 
 import { DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../../utils/mutations';
 import { FETCH_ALL_POSTS_QUERY } from '../../utils/queries';
+import MyPopup from '../../utils/MyPopup';
 
 function DeleteButton({ postId, commentId, callback }) {
   const [confirmOpen, setConfirmOpen]= useState(false);
@@ -30,9 +31,11 @@ function DeleteButton({ postId, commentId, callback }) {
 
   return (
     <>
-      <Button as="div" color="red" floated="right" onClick={()=> setConfirmOpen(true)} >
-        <Icon name="trash" style={{ margin: 0 }} />
-      </Button>
+      <MyPopup content={commentId ? 'Delete comment' : 'Delete post'} >
+        <Button as="div" color="red" floated="right" onClick={()=> setConfirmOpen(true)} >
+          <Icon name="trash" style={{ margin: 0 }} />
+        </Button>
+      </MyPopup>
       <Confirm open={confirmOpen} onClick={()=> setConfirmOpen(false)} onConfirm={deletePostOrMutation} />
     </>
   );

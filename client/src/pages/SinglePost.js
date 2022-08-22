@@ -9,6 +9,7 @@ import { SUBMIT_COMMENT_MUTATION } from "../utils/mutations";
 import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
+import MyPopup from '../utils/MyPopup';
 
 function SinglePost(props) {
   const {data: user} = Auth.getProfile();
@@ -67,14 +68,16 @@ function SinglePost(props) {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{id, likes, likeCount }} />
-                <Button as="div" labelPosition="right" onClick={() => console.log('Comment on Post')}>
-                  <Button basic color="blue">
-                    <Icon name="comments" />
+                <MyPopup content="Comment on Post">
+                  <Button as="div" labelPosition="right" onClick={() => console.log('Comment on Post')}>
+                    <Button basic color="blue">
+                      <Icon name="comments" />
+                    </Button>
+                    <Label basic color="blue" pointing="left">
+                      {commentCount}
+                    </Label>
                   </Button>
-                  <Label basic color="blue" pointing="left">
-                    {commentCount}
-                  </Label>
-                </Button>
+                </MyPopup>
                 {user && user.username === username && (
                   <DeleteButton postId={id} callback={deletePostCallback}/>
                 )}
