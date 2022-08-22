@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Button, Icon, Confirm } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 
-import { DELETE_POST_MUTATION, DELETE_REACTION_MUTATION } from '../../utils/mutations';
+import { DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../../utils/mutations';
 import { FETCH_ALL_POSTS_QUERY } from '../../utils/queries';
 
 function DeleteButton({ postId, commentId, callback }) {
   const [confirmOpen, setConfirmOpen]= useState(false);
 
-  const mutation = commentId ? DELETE_REACTION_MUTATION : DELETE_POST_MUTATION
+  const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION
 
   const [deletePostOrMutation] = useMutation(mutation, {
     update(proxy){

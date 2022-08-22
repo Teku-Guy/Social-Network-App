@@ -91,7 +91,7 @@ export const SUBMIT_COMMENT_MUTATION = gql`
   
 `;
 
-export const DELETE_REACTION_MUTATION = gql`
+export const DELETE_COMMENT_MUTATION = gql`
   mutation deleteComment($postId: ID!, $commentId: ID!) {
     deleteComment(postId: $postId, commentId: $commentId){
       id
