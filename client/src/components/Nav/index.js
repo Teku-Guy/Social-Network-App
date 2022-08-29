@@ -6,6 +6,8 @@ import Auth from '../../utils/auth';
 
 function Nav() {
   const user = Auth.loggedIn();
+  const {data: {username}} = Auth.getProfile();
+  console.log(username)
   const pathName = window.location.pathname;
   const path = pathName === '/' ? 'home' : pathName.substring(1);
   
@@ -15,7 +17,7 @@ function Nav() {
 
   const navBar = user ? (
     <Menu pointing secondary size="massive" color="teal">
-      <Menu.Item name={Auth.getProfile().data.username} active as={Link} to="/" />
+      <Menu.Item name={username} active as={Link} to="/" />
 
       <Menu.Menu position="right">
         <Menu.Item name="logout" onClick={Auth.logout} />

@@ -7,6 +7,7 @@ import { useForm } from "../utils/helpers";
 import Auth from '../utils/auth';
 
 function Register() {
+	let test = '';
 	const user = Auth.loggedIn();
 	if(user){
 		window.location.assign('/');
@@ -21,7 +22,8 @@ function Register() {
   });
 
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
-		update(_, { data: { register: {userData: token} }}){
+		update(_, { data: {register: {token}} }){
+			test = token;
       Auth.login(token);
 		},
 		onError(err){
@@ -31,6 +33,8 @@ function Register() {
 	});
 
 	function registerUser(){
+		
+		console.log(test);
 		addUser();
 	}
 

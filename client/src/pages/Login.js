@@ -22,11 +22,11 @@ function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, 
       {
-        data: {login}
+        data: {login: {token}}
       }
     ) {
 			// console.log(login.token)
-      Auth.login(login.token);
+      Auth.login(token);
     },
     onError(err) {
 			setErrors(err.graphQLErrors[0].extensions.errors);
