@@ -1,10 +1,14 @@
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const { GraphQLUpload } = require('graphql-upload');
+const path = require('path');
+const fs = require('fs');
 
 const { User, Post }= require('../models');
 const { signToken } = require('../utils/auth');
 const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
 
 const resolvers = { 
+  Upload: GraphQLUpload,
   Query: { 
     users: async (parent, args, context) => {
       const userData = await User.find();
@@ -183,8 +187,18 @@ const resolvers = {
       throw new AuthenticationError('Not Authenticated!')
     },
     addFriend: async (parents, args) => {},
-    removeFriend: async (parents, args) => {}
+    removeFriend: async (parents, args) => {},
+		uploadFile: async (parents, { file }) => {
+      const {createReadStream, filename, mimetype, encoding } = await file;
 
+      const stream = createReadStream()
+      const pathName = path.join(__dirname, `/public/images/${filename}`);
+      await stream.pipe(fs.createWriteStream( ))
+
+      return {
+        url: `http://localhost:3001/images/${filename}`
+      }
+    }
   }
 };
 

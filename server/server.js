@@ -1,10 +1,14 @@
 const express = require('express');
+const {graphqlUploadExpress} = require('graphql-upload');
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
 const db = require('./config/connection');
 const path = require('path');
 const {InMemoryLRUCache} = require('@apollo/utils.keyvaluecache');
+const {
+  ApolloServerPluginLandingPageLocalDefault,
+} = require('apollo-server-core');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,9 +16,15 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  csrfPrevention: true,
   context: authMiddleware,
   cache: new InMemoryLRUCache(),
+  plugins: [
+    ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+  ],
 });
+
+app.use(graphqlUploadExpress());
 
 server.start().then(() => {
 	server.applyMiddleware({ app });

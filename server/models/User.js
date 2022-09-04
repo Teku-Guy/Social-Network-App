@@ -21,14 +21,19 @@ const UserSchema = new Schema(
         //match a valid email address
         match: [/.+@.+\..+/, 'Please enter a valid e-mail address']
     },
+    bio: String,
+    pfp: {
+      type: Schema.Types.ObjectId,
+      ref: 'Image'
+    },
     createdAt: String,
     //friends model thru id
-    // friends: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'User'
-    //     }
-    // ]
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   {
     toJSON: {

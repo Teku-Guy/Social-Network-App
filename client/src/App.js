@@ -22,6 +22,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SinglePost from "./pages/SinglePost";
 import Nav from "./components/Nav";
+import Profile from "./pages/Profile";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -51,6 +52,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/posts/:postId" element={<SinglePost />} />
+            <Route exact path="/user/:userID" element={<Profile />} />
           </Routes>
         </Container>
       </Router>

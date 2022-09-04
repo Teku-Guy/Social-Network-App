@@ -10,6 +10,13 @@ const typeDefs = gql`
 		token: String!
 		createdAt: String
 	}
+
+	scalar Upload
+	
+	type File{
+		url: String!
+	}
+
 	type Post{
 		id: ID!
 		body: String!
@@ -61,6 +68,7 @@ const typeDefs = gql`
 		likePost(postId: ID!): Post!
 		addFriend(user_id: Int): User!
 		removeFriend(user_id: Int): User!
+		uploadFile(file: Upload!): File!
 	}
 
 `;
