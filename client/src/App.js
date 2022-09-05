@@ -11,12 +11,18 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import { Container } from 'semantic-ui-react'
-
+import { Box, Container } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import 'semantic-ui-css/semantic.min.css'
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import './App.css'
 
+import {theme} from './utils/theme';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -43,20 +49,25 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <Router>
-        <Container>
-          <Nav />
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
-            <Route exact path="/posts/:postId" element={<SinglePost />} />
-            <Route exact path="/user/:userID" element={<Profile />} />
-          </Routes>
-        </Container>
-      </Router>
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <ApolloProvider client={client} >
+        <Router>
+          <CssBaseline />
+          <Container maxWidth="lg" sx={{ p:3 }}>
+            <Nav />
+            <Box component="main" sx={{ pt:10, display: 'flex' }}>
+                <Routes>
+                  <Route exact path="/" element={<Home />} />
+                  <Route exact path="/login" element={<Login />} />
+                  <Route exact path="/register" element={<Register />} />
+                  <Route exact path="/posts/:postId" element={<SinglePost />} />
+                  <Route exact path="/user/:userID" element={<Profile />} />
+                </Routes>
+            </Box>
+          </Container>
+        </Router>
+      </ApolloProvider>
+    </ThemeProvider>
   );
 }
 

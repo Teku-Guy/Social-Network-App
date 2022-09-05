@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { Grid, Transition } from "semantic-ui-react";
+import Grid from '@mui/material/Grid';
+import { Transition } from "semantic-ui-react";
 
 import { FETCH_ALL_POSTS_QUERY } from "../utils/queries";
 import PostCard from "../components/PostCard";
@@ -13,15 +14,15 @@ function Home() {
   const { getPosts: posts } = {...data}
 
   return (
-    <Grid columns={3}>
-      <Grid.Row className="page-title">
+    <Grid container spacing={2}>
+      <Grid item xs={4} className="page-title">
         <h1>Recent Posts</h1>
-      </Grid.Row>
-      <Grid.Row>
+      </Grid>
+      <Grid item xs={4}>
         {user && (
-          <Grid.Column>
+          <Grid item xs={4}>
             <PostForm />
-          </Grid.Column>
+          </Grid>
         )}
         {loading ? (
           <h1>Loading posts..</h1>
@@ -30,14 +31,14 @@ function Home() {
             {
               posts &&
               posts.map((post) => (
-                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                <Grid item xs={4} key={post.id} style={{ marginBottom: 20 }}>
                   <PostCard post={post} />
-                </Grid.Column>
+                </Grid>
               ))
             }
           </Transition.Group>
         )}
-      </Grid.Row>
+      </Grid>
     </Grid>
   );
 }
