@@ -1,9 +1,9 @@
 import React from 'react';
-import { Popup } from 'semantic-ui-react';
+import { Portal  } from '@mui/material';
 
 function MyPopup({content, children}) {
   return (
-    <Popup
+    <Portal
       inverted
       content={content}
       trigger={children}

@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Button, Icon, Label, Image } from 'semantic-ui-react';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Avatar, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 
 import Auth from '../../utils/auth';
 import LikeButton from '../LikeButton';
@@ -15,27 +17,33 @@ function PostCard({
   const {data: user} = Auth.getProfile();
 
   return (
-    <Card fluid>
-      <Card.Content>
-        <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/large/molly.png' />
-        <Card.Header>{username}</Card.Header>
-        <Card.Meta as={Link} to={`/posts/${id}`}>{moment(createdAt).fromNow(true)}</Card.Meta>
-        <Card.Description>{body}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardMedia
+        component="img"
+        alt="green iguana"
+        height="140"
+        image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+      />
+      <Avatar src={'https://i.pravatar.cc/300'} />
+      <CardContent>
+        <Typography>
+          {username}
+        </Typography>
+        <Typography as={Link} to={`/posts/${id}`}>
+          {moment(createdAt).fromNow(true)}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {body}
+        </Typography>
+      </CardContent>
+      <CardActions>
         <LikeButton user={user} post={{id, likes, likeCount }} />
-        <MyPopup content="Comment on Post">
-          <Button labelPosition='right' as={Link} to={`/posts/${id}`}>
-            <Button color='blue' basic >
-              <Icon name='comments' />
-            </Button>
-            <Label as='a' basic color='blue' pointing='left'>
-              {commentCount}
-            </Label>
-          </Button>
-        </MyPopup>
-        {user && user.username === username && <DeleteButton postId={id} />}
-      </Card.Content>
+        <BadgeUnstyled showZero badgeContent={commentCount}>
+          <IconButton>
+            <ChatBubbleOutlineIcon />
+          </IconButton>
+        </BadgeUnstyled>
+      </CardActions>
     </Card>
   )
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState} from 'react';
-import { Button, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { IconButton } from '@mui/material'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 
 import { LIKE_POST_MUTATION } from '../../utils/mutations';
 import MyPopup from '../../utils/MyPopup';
@@ -18,33 +21,26 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
     variables: {postId: id}
   })
 
-
-
   const likeButton = user ? (
     liked ? (
-      <Button color='teal'>
-        <Icon name='heart' />
-      </Button>
+      <IconButton onClick={likePost}>
+          <FavoriteIcon />
+      </IconButton>
     ) : (
-      <Button color='teal' basic>
-        <Icon name='heart' />
-      </Button>
+      <IconButton onClick={likePost}>
+          <FavoriteBorderIcon />
+      </IconButton>
     )
   ): (
-    <Button as={Link} to="/login" color='teal' basic>
-      <Icon name='heart' />
-    </Button>
+    <IconButton as={Link} to="/login">
+      <FavoriteBorderIcon />
+    </IconButton>
   )
 
   return (
-    <Button as="div" labelPosition="right" onClick={likePost}>
-      <MyPopup content={liked ? 'Unlike' : 'Like'}>
+      <BadgeUnstyled showZero badgeContent={likeCount}>
         {likeButton}
-      </MyPopup>
-      <Label basic color="teal" pointing="left">
-        {likeCount}
-      </Label>
-    </Button>
+      </BadgeUnstyled>
   );
 }
 
