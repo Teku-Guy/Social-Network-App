@@ -14,29 +14,29 @@ function Home() {
   const { getPosts: posts } = {...data}
 
   return (
-    <Grid container spacing={2} >
+    <Grid container spacing={2}>
       <Grid item xs={12} className="page-title">
         <h1>Recent Posts</h1>
       </Grid>
-      <Grid  container spacing={3} pt={2.5} >
+      <Grid  container spacing={4} p={2.5} >
         {user && (
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
             <PostForm />
           </Grid>
         )}
         {loading ? (
           <h1>Loading posts..</h1>
         ) : (
-          <Grid item xs={8}>
-            {
-              posts &&
-              posts.map((post) => (
-                <Grid item xs={4} key={post.id} style={{ marginBottom: 20 }}>
-                  <PostCard post={post} />
-                </Grid>
-              ))
-            }
-          </Grid>
+          <>
+              {
+                posts &&
+                posts.map((post) => (
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={post.id} style={{ marginBottom: 20 }}>
+                    <PostCard post={post} />
+                  </Grid>
+                ))
+              }
+          </>
         )}
       </Grid>
     </Grid>

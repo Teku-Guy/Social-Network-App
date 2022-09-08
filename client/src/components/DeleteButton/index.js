@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
-import { Button, Icon, Confirm } from 'semantic-ui-react';
+import { Confirm } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../../utils/mutations';
 import { FETCH_ALL_POSTS_QUERY } from '../../utils/queries';
 import MyPopup from '../../utils/MyPopup';
 
 function DeleteButton({ postId, commentId, callback }) {
-  const [confirmOpen, setConfirmOpen]= useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION
 
   const [deletePostOrMutation] = useMutation(mutation, {
     update(proxy){
-      setConfirmOpen(false);
+      handleClose();
       if(!commentId) {
         const oldData = proxy.readQuery({
           query: FETCH_ALL_POSTS_QUERY
@@ -32,11 +44,32 @@ function DeleteButton({ postId, commentId, callback }) {
   return (
     <>
       <MyPopup content={commentId ? 'Delete comment' : 'Delete post'} >
-        <Button as="div" color="red" floated="right" onClick={()=> setConfirmOpen(true)} >
-          <Icon name="trash" style={{ margin: 0 }} />
-        </Button>
+        <IconButton onClick={handleOpen} sx={{m:2}} >
+          <DeleteIcon />
+        </IconButton>
       </MyPopup>
-      <Confirm open={confirmOpen} onClick={()=> setConfirmOpen(false)} onConfirm={deletePostOrMutation} />
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Are You Sure?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Once done this action is non revisible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={deletePostOrMutation}>Yes</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

@@ -6,7 +6,7 @@ class AuthService {
       const token = this.loggedIn();
       if(token) {
         return decode(this.getToken());
-      } else return {data:"invalid token specified"}
+      } else return {data: ""}
     } catch(err){
       return err;
     }

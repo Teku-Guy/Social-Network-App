@@ -53,7 +53,7 @@ function App() {
       <ApolloProvider client={client} >
         <Router>
           <CssBaseline />
-          <Container maxWidth="lg" sx={{ p:3 }}>
+          <Container maxWidth="xl" sx={{ p:3 }}>
             <Nav />
             <Box component="main" sx={{ pt:10, display: 'flex' }}>
                 <Routes>

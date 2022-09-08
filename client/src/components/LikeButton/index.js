@@ -21,6 +21,10 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
     variables: {postId: id}
   })
 
+  const login = () => {
+    window.location.assign('/login');
+  }
+
   const likeButton = user ? (
     liked ? (
       <IconButton onClick={likePost}>
@@ -32,7 +36,7 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
       </IconButton>
     )
   ): (
-    <IconButton as={Link} to="/login">
+    <IconButton onClick={login}>
       <FavoriteBorderIcon />
     </IconButton>
   )

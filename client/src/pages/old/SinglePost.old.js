@@ -10,7 +10,6 @@ import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 import MyPopup from '../utils/MyPopup';
-import { Avatar } from "@mui/material";
 
 function SinglePost(props) {
   const {data: user} = Auth.getProfile();
@@ -54,10 +53,10 @@ function SinglePost(props) {
     } = getPost;
 
     postMarkup = (
-      <Grid container spacing={2}>
+      <Grid>
         <Grid.Row>
           <Grid.Column width={2}>
-            <Avatar alt={`${username}`} src="https://react.semantic-ui.com/images/avatar/large/molly.png" sx={{ width: 200, height: 200 }}/>
+            <Image src="https://react.semantic-ui.com/images/avatar/large/molly.png" size="small" float="right" />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>
