@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router';
 import { useMutation, useQuery } from "@apollo/client";
-import { Button, Card, Form, Grid, Icon, Image, Label } from "semantic-ui-react";
 import moment from 'moment';
+import {
+  Grid,
+  Box,
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  Typography,
+  IconButton,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  Input,
+  Button
+} from "@mui/material";
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 
 import { FETCH_POST_QUERY } from "../utils/queries";
 import { SUBMIT_COMMENT_MUTATION } from "../utils/mutations";
 import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
-import MyPopup from '../utils/MyPopup';
-import { Avatar } from "@mui/material";
 
 function SinglePost(props) {
   const {data: user} = Auth.getProfile();
@@ -55,72 +70,86 @@ function SinglePost(props) {
 
     postMarkup = (
       <Grid container spacing={2}>
-        <Grid.Row>
-          <Grid.Column width={2}>
-            <Avatar alt={`${username}`} src="https://react.semantic-ui.com/images/avatar/large/molly.png" sx={{ width: 200, height: 200 }}/>
-          </Grid.Column>
-          <Grid.Column width={10}>
-            <Card fluid>
-              <Card.Content>
-                <Card.Header>{username}</Card.Header>
-                <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-                <Card.Description>{body}</Card.Description>
-              </Card.Content>
+        <Grid item lg={2}>
+          <Avatar alt={`${username}`} src="https://react.semantic-ui.com/images/avatar/large/molly.png" sx={{ width: 200, height: 200 }}/>
+        </Grid>
+          <Grid item lg={10}>
+            <Card sx={{ mb:2.5}}>
+              <CardHeader title={`${username}`}  subheader={moment(createdAt).fromNow()}/>
+              <CardContent>
+                <Typography variant="body1">
+                  {body}
+                </Typography>
+              </CardContent>
               <hr />
-              <Card.Content extra>
+              <CardActions sx={{ padding: "24px" }}>
                 <LikeButton user={user} post={{id, likes, likeCount }} />
-                <MyPopup content="Comment on Post">
-                  <Button as="div" labelPosition="right" onClick={() => console.log('Comment on Post')}>
-                    <Button basic color="blue">
-                      <Icon name="comments" />
-                    </Button>
-                    <Label basic color="blue" pointing="left">
-                      {commentCount}
-                    </Label>
-                  </Button>
-                </MyPopup>
+                <BadgeUnstyled showZero badgeContent={commentCount}>
+                  <IconButton >
+                    <ChatBubbleOutlineIcon />
+                  </IconButton>
+                </BadgeUnstyled>
                 {user && user.username === username && (
                   <DeleteButton postId={id} callback={deletePostCallback}/>
                 )}
-              </Card.Content>
+              </CardActions>
             </Card>
             {user && (
-              <Card fluid>
-                <Card.Content>
+              <Card sx={{ mb:2.5}}>
+                <CardContent>
                   <p>React to this Post</p>
-                  <Form>
-                    <div className="ui action input fluid">
-                      <input type="text" placeholder="Comment.."
-                        name="comment"
-                        value={comment}
-                        onChange={(event) => setComment(event.target.value)}
-                      />
-                      <button type="submit"
-                        className="ui button teal"
-                        disabled={comment.trim() === ''}
-                        onClick={submitComment}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </Form>
-                </Card.Content>
+                  <Box component='form' autoComplete="off">
+                      <FormControl fullWidth variant="standard">
+                        <InputLabel htmlFor="comment">Comment...</InputLabel>
+                        <Input
+                          id="comment"
+                          name="comment"
+                          value={comment}
+                          onChange={(event) => setComment(event.target.value)}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <Button 
+                                type="submit"
+                                disableElevation={true}
+                                disabled={comment.trim() === ''}
+                                onClick={submitComment}
+                              >
+                                Submit
+                              </Button>
+                            </InputAdornment>
+                          }
+                          label="Password"
+                        />
+                      </FormControl>
+                      
+                  </Box>
+                </CardContent>
               </Card>
             )}
             {comments.map((comment) => (
-              <Card fluid key={comment.id}>
-                <Card.Content>
-                  {user && user.username === comment.username && (
-                    <DeleteButton postId={id} commentId={comment.id} />
-                  )}
-                  <Card.Header>{comment.username}</Card.Header>
-                  <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
-                  <Card.Description>{comment.body}</Card.Description>
-                </Card.Content>
+              <Card sx={{ mb:0.5}} key={comment.id}>
+                <CardContent disableSpacing>
+                  <CardHeader
+                    title={`${comment.username}`}
+                    subheader={`${moment(comment.createdAt).fromNow()}`}
+                    action={
+                      user && user.username === comment.username && (
+                        <DeleteButton
+                          postId={id}
+                          commentId={comment.id}
+                        />
+                      )
+                    }
+                  />
+                  <CardContent>
+                    <Typography variant="body1">
+                        {comment.body}
+                    </Typography>
+                  </CardContent>
+                </CardContent>
               </Card>
             ))}
-          </Grid.Column>
-        </Grid.Row>
+          </Grid>
       </Grid>
     )
   }
