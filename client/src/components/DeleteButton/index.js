@@ -43,12 +43,9 @@ function DeleteButton({ postId, commentId, callback }) {
 
   return (
     <>
-      <MyPopup content={commentId ? 'Delete comment' : 'Delete post'} >
-        <IconButton onClick={handleOpen} sx={{m:2}} >
-          <DeleteIcon />
-        </IconButton>
-      </MyPopup>
-
+      <IconButton color='error' onClick={handleOpen} sx={{m:2}} >
+        <DeleteIcon />
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -64,10 +61,10 @@ function DeleteButton({ postId, commentId, callback }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button variant="contained" autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={deletePostOrMutation}>Yes</Button>
+          <Button  color='error' onClick={deletePostOrMutation}>Yes</Button>
         </DialogActions>
       </Dialog>
     </>
