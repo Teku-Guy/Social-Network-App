@@ -47,7 +47,7 @@ function PostCard({
           {body}
         </Typography>
       </CardContent>
-      <CardActions sx={{ padding: "24px" }}>
+      <CardActions disableSpacing sx={{ padding: "24px" }}>
         <LikeButton user={user} post={{id, likes, likeCount }} />
         <BadgeUnstyled showZero badgeContent={commentCount}>
           <IconButton onClick={toComment}>

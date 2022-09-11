@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Box, Button, FormControl, FormHelperText, Grid, Input, InputLabel, Paper } from "@mui/material";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";
@@ -39,50 +39,104 @@ function Register() {
 	}
 
 	return (
-		<div className="form-container">
-			<Form onSubmit={onSubmit} noValidate className={ loading ? 'loading' : '' } >
+		<Grid container sx={{
+			display: "flex",
+    	flexDirection: "column",
+    	alignItems: "center"}}
+		>
+			<Box
+				component={'form'}
+				onSubmit={onSubmit}
+				noValidate
+				autoComplete="off"
+				sx={{ p: 2}}
+			>
 				<h1>Register</h1>
-				<Form.Input
-					label= "Username"
-					placeholder="Username.."
-					name="username"
-					type="text"
-					value={values.username}
+				<FormControl
 					error={ errors.username? true : false }
-					onChange={onChange}
-				/>
-				<Form.Input
-					label= "Email"
-					placeholder="Email.."
-					name="email"
-					type="email"
-					value={values.email}
-					error={ errors.email? true : false }
-					onChange={onChange}
-				/>
-				<Form.Input
-					label= "Password"
-					placeholder="Password.."
-					name="password"
-					type="password"
-					value={values.password}
+					fullWidth
+					margin="normal"
+					variant="standard"
+				>
+					<InputLabel htmlFor="username">
+						Username
+					</InputLabel>
+					<Input
+						placeholder="Username.."
+						name="username"
+						type="text"
+						value={values.username}
+						error={ errors.username? true : false }
+						onChange={onChange}
+					/>
+					{ 
+						errors.username ? (
+							<FormHelperText id="error-username">
+								{errors.username}
+							</FormHelperText>
+						) : (<></>)
+					}
+				</FormControl>
+				<FormControl 
+						error={ errors.email? true : false } 
+						fullWidth 
+						margin="normal" 
+						variant="standard"
+				>
+					<InputLabel htmlFor="email">
+						Email
+          </InputLabel>
+					<Input
+						placeholder="Email.."
+						name="email"
+						type="email"
+						value={values.email}
+						error={ errors.email? true : false }
+						onChange={onChange}
+					/>
+					{ 
+						errors.email ? (
+							<FormHelperText id="error-email">
+								{errors.email}
+							</FormHelperText>
+						) : (<></>)
+					}
+				</FormControl>
+				<FormControl
 					error={ errors.password? true : false }
-					onChange={onChange}
-				/>
-				<Button type="submit" primary>
-					Register
+					fullWidth
+					margin="normal"
+					variant="standard"
+				>
+					<InputLabel htmlFor="password">
+						Password
+          </InputLabel>
+					<Input
+						placeholder="Password.."
+						name="password"
+						type="password"
+						value={values.password}
+						error={ errors.password? true : false }
+						onChange={onChange}
+					/>
+					{ 
+						errors.password ? (
+							<FormHelperText id="error-password">
+								{errors.password}
+							</FormHelperText>
+						) : (<></>)
+					}
+				</FormControl>
+				<Button
+          disableRipple
+          fullWidth
+          variant="contained"
+          type="submit"
+        >
+					Join
 				</Button>
-			</Form>
-			{Object.keys(errors).length > 0 && (
-				<div className="ui error message">
-					<ul className="list">
-						{Object.values(errors).map((value) => (
-							<li keys={value}>{value}</li>
-						))}
-					</ul>
-				</div>
-			)}
-		</div>
+			</Box>
+		</Grid>
 	);
 }
 export default Register;
