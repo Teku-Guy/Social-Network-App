@@ -1,6 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography, Avatar, IconButton } from '@mui/material';
+import { Card, CardActions, CardContent, CardMedia, Typography, Avatar, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -9,7 +8,6 @@ import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 import Auth from '../../utils/auth';
 import LikeButton from '../LikeButton';
 import DeleteButton from '../DeleteButton';
-import MyPopup from '../../utils/MyPopup';
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes }
@@ -40,7 +38,7 @@ function PostCard({
         <Typography variant="subtitle1">
           {username}
         </Typography>
-        <Typography variant="subtitle2" as={Link} to={`/posts/${id}`}>
+        <Typography variant="subtitle2" as={Link} to={`/posts/${id}`} sx={{ textDecoration: 'none' }} color='secondary'>
           {moment(createdAt).fromNow(true)}
         </Typography>
         <Typography variant="body1" color="text.secondary">

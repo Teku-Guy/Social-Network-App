@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Box, Button, Input } from '@mui/material';
 import { useMutation } from '@apollo/client';
 
 import { FETCH_ALL_POSTS_QUERY } from '../../utils/queries';
@@ -29,21 +29,20 @@ function PostForm() {
 
   return (
     <>
-      <Form onSubmit={onSubmit}>
+      <Box component={'form'} onSubmit={onSubmit} noValidate autoComplete="off" sx={{ p: 2}}>
         <h2>Create a post:</h2>
-        <Form.Field>
-          <Form.Input
+          <Input
             placeholder= "Hi World!"
             name="body"
+            fullWidth
             onChange={onChange}
             value={values.body}
             error={error ? true : false}  
           />
-          <Button type='submit' color='teal'>
+          <Button type='submit' fullWidth>
             Submit
           </Button>
-        </Form.Field>
-      </Form>
+      </Box>
       {error && (
         <div className="ui error message" style={{marginBottom: 20}}>
           <ul className="list">

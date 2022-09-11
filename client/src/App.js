@@ -15,7 +15,6 @@ import { Box, Container } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import 'semantic-ui-css/semantic.min.css'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

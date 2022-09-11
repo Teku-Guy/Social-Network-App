@@ -3,58 +3,36 @@ import { AppBar,
   Box,
   Toolbar,
   Typography,
-  Button,
   IconButton,
   MenuItem,
   Avatar,
-  List,
   ListItemIcon,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  Drawer,
   Tooltip,
   Menu,  
   Tab,
   Tabs} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
-import { Link } from 'react-router-dom'
 
 import Auth from '../../utils/auth';
 
-const drawerWidth = 240;
 const navItems  = [ {title:'Login', value: 1}, {title:'Register', value: 2} ];
 
 function Nav(props) {
   const user = Auth.loggedIn();
-  const {data: {username, id}} = Auth.getProfile();
+  const {data: {username}} = Auth.getProfile();
   const pathName = window.location.pathname;
   const path = pathName === '/' ? 'home' : pathName.substring(1);
   const [value, setValue] = useState(path);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [item, setItem] = useState(null);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  
   const handleChange = (e, newValue) => {
     setValue(newValue);
-  };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = (event) => {
-    setItem('')
-    event.preventDefault();
-    console.log(event.currentTarget.value)
-    setAnchorElUser(null);
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -135,10 +113,10 @@ function Nav(props) {
                 </ListItemIcon>
                 {username}
               </MenuItem>
-              <MenuItem key='Profile' onClick={handleCloseUserMenu}>
+              <MenuItem key='Profile' onClick={handleClose}>
                 <Avatar /> Profile
               </MenuItem>
-              <MenuItem key='Account' onClick={handleCloseUserMenu}>
+              <MenuItem key='Account' onClick={handleClose}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>

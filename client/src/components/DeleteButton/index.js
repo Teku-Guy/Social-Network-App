@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Confirm } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 import {
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,7 +12,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../../utils/mutations';
 import { FETCH_ALL_POSTS_QUERY } from '../../utils/queries';
-import MyPopup from '../../utils/MyPopup';
 
 function DeleteButton({ postId, commentId, callback }) {
   const [open, setOpen] = useState(false);
