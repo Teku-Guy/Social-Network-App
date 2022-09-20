@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { Box, Button, FormControl, FormHelperText, Grid, Input, InputLabel, Paper } from "@mui/material";
+import { Box, Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel, Paper } from "@mui/material";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";
@@ -39,6 +39,7 @@ function Register() {
 	}
 
 	return (
+		<Container maxWidth="md" sx={{ p:3 }}>
 		<Grid container sx={{
 			display: "flex",
     	flexDirection: "column",
@@ -137,6 +138,7 @@ function Register() {
 				</Button>
 			</Box>
 		</Grid>
+		</Container>
 	);
 }
 export default Register;

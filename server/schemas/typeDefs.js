@@ -7,6 +7,7 @@ const typeDefs = gql`
 		email: String!
 		posts: [Post]
 		friends: [User]
+		bio: String
 		token: String!
 		createdAt: String
 	}
@@ -48,7 +49,7 @@ const typeDefs = gql`
 		users: [User]
 		getPosts: [Post]
 		getPost(postId: ID!): Post
-		user(userId: ID, username: String): User
+		getUser(userId: ID, username: String): User
 	}
 	
 	input RegisterInput {

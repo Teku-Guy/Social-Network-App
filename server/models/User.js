@@ -48,6 +48,10 @@ UserSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
 
+UserSchema.virtual('postCount').get(function() {
+  //returns the length of the friends array22
+});
+
 UserSchema.pre('save', async function(next) {
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;

@@ -10,7 +10,8 @@ import { AppBar,
   Tooltip,
   Menu,  
   Tab,
-  Tabs} from '@mui/material';
+  Tabs,
+  Container} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
@@ -42,9 +43,16 @@ function Nav(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const profile = () => {
+    window.location.assign(`/user/${username}`);
+  };
+  const settings = () => {
+    window.location.assign('/settings');
+  };
   
   const navBar = user ? (
-    <>
+    <Container maxWidth="xl" sx={{ p:3 }}>
     <AppBar component="nav">
       <Toolbar>
         <Typography
@@ -113,10 +121,10 @@ function Nav(props) {
                 </ListItemIcon>
                 {username}
               </MenuItem>
-              <MenuItem key='Profile' onClick={handleClose}>
+              <MenuItem key='Profile' onClick={profile}>
                 <Avatar /> Profile
               </MenuItem>
-              <MenuItem key='Account' onClick={handleClose}>
+              <MenuItem key='Account' onClick={settings}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
@@ -132,9 +140,9 @@ function Nav(props) {
           </Box>
       </Toolbar>
     </AppBar>
-    </>
+    </Container>
   ) : (
-    <>
+    <Container maxWidth="xl" sx={{ p:3 }}>
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -167,7 +175,7 @@ function Nav(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      </>
+    </Container>
   );
 
   return navBar;

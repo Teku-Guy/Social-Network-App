@@ -28,6 +28,7 @@ import Register from "./pages/Register";
 import SinglePost from "./pages/SinglePost";
 import Nav from "./components/Nav";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -52,7 +53,6 @@ function App() {
       <ApolloProvider client={client} >
         <Router>
           <CssBaseline />
-          <Container maxWidth="xl" sx={{ p:3 }}>
             <Nav />
             <Box component="main" sx={{ pt:10, display: 'flex' }}>
                 <Routes>
@@ -60,10 +60,10 @@ function App() {
                   <Route exact path="/login" element={<Login />} />
                   <Route exact path="/register" element={<Register />} />
                   <Route exact path="/posts/:postId" element={<SinglePost />} />
-                  <Route exact path="/user/:userID" element={<Profile />} />
+                  <Route exact path="/settings" element={<Settings />} />
+                  <Route exact path="/user/:username" element={<Profile />} />
                 </Routes>
             </Box>
-          </Container>
         </Router>
       </ApolloProvider>
     </ThemeProvider>

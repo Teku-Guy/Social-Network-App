@@ -43,3 +43,13 @@ export const FETCH_POST_QUERY = gql`
     }
   }
 `;
+
+export const FETCH_USER_QUERY = gql`
+  query($username: String!){
+    getUser(username: $username){
+      id
+      username
+      bio
+    }
+  }
+`;

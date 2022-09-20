@@ -14,8 +14,11 @@ const resolvers = {
       const userData = await User.find();
       return userData;
     },
-    user: async (parent, args, context) => {
-      const userData = await User.findOne({'username': args.username});
+    getUser: async (parent, args, context) => {
+      const userData = await User.findOne({username: args.username, id: args.userId});
+      if(!userData){
+        throw new Error('Post not found');
+      }
       return userData;
     },
     getPosts: async(parent, args, context) => {
@@ -50,6 +53,11 @@ const resolvers = {
           errors: {username: 'This username is taken'}
         })
       }
+      if(password.length < 6){
+        throw new UserInputError('Password too short', {
+          errors: {password: 'Password must be at least 6 characters'}
+        })
+      }
       const user = await User.create({
         email, 
         username, 
@@ -70,7 +78,7 @@ const resolvers = {
 
       const user = await User.findOne({username});
 
-      if (!user) {
+      if (!user || user === '') {
         errors.general = 'User not found';
         throw new UserInputError('User not found', { errors });
       }

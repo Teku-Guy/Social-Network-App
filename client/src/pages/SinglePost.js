@@ -27,7 +27,7 @@ import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 
-function SinglePost(props) {
+function SinglePost() {
   const {data: user} = Auth.getProfile();
   const { postId } = useParams();
   const [comment, setComment] = useState('');
