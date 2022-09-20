@@ -25,6 +25,14 @@ const resolvers = {
       const postsData = await Post.find().sort({ createdAt: -1});
       return postsData;
     },
+    getPostByUser: async (parent, {username}, context) => {
+      const postData = await Post.find({user: username});
+      if(!postData){
+        throw new Error('User has no posts');
+      }
+      console.log(postData);
+      return postData;
+    },
     getPost: async (parent, {postId}, context) => {
       const postData = await Post.findById(postId);
       if(!postData){

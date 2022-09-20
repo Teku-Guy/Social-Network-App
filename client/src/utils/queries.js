@@ -44,12 +44,21 @@ export const FETCH_POST_QUERY = gql`
   }
 `;
 
-export const FETCH_USER_QUERY = gql`
+export const FETCH_PROFILE_QUERY = gql`
   query($username: String!){
     getUser(username: $username){
       id
       username
       bio
+    }
+  }
+`;
+
+export const FETCH_USER_POSTS_QUERY = gql`
+  query($username: String!){
+    getPostByUser(username: $username){
+      id
+      body
     }
   }
 `;

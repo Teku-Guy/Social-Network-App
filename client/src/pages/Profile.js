@@ -5,11 +5,16 @@ import { Avatar, Box, Button, Container, Grid, Paper, Typography } from "@mui/ma
 import { useParams } from "react-router-dom";
 
 import Auth from "../utils/auth";
-import { FETCH_USER_QUERY } from '../utils/queries';
+import { FETCH_PROFILE_QUERY, FETCH_USER_POSTS_QUERY } from '../utils/queries';
 
 function Profile(){
   const { username } = useParams();
-  const { data:  getUser } = useQuery(FETCH_USER_QUERY, {
+  const { data:  getPostByUser } = useQuery(FETCH_USER_POSTS_QUERY, {
+    variables: {
+      username
+    },
+  });
+  const { data:  getUser } = useQuery(FETCH_PROFILE_QUERY, {
     variables: {
       username
     },
@@ -26,6 +31,7 @@ function Profile(){
         bio
       }
     } = getUser;
+    const { getPostByUser } = getPostByUser;
     profileLayout = (
       <Container maxWidth="xl" sx={{ p:10 }}>
         <Paper
@@ -54,7 +60,7 @@ function Profile(){
                   <Grid container spacing={3} mb={3}>
                     <Grid item>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        0&nbsp;
+                        {getPostByUser.length} &nbsp;
                       </Typography>
                       <Typography component="span" variant="body2" color="text">
                         Posts
