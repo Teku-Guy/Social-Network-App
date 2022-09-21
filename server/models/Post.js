@@ -20,11 +20,7 @@ const PostSchema = new Schema(
         username: String,
         createdAt: String
       }
-    ],
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'users'
-    }
+    ]
   },
   {
     toJSON: {

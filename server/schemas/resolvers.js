@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 const { GraphQLUpload } = require('graphql-upload');
 const path = require('path');
 const fs = require('fs');
@@ -25,12 +25,11 @@ const resolvers = {
       const postsData = await Post.find().sort({ createdAt: -1});
       return postsData;
     },
-    getPostByUser: async (parent, {username}, context) => {
-      const postData = await Post.find({user: username});
-      if(!postData){
+    getPostByUser: async (parent, args, context) => {
+      const postData = await (await Post.find()).filter(post => post.username === args.username);
+      if(postData.length <= 0){
         throw new Error('User has no posts');
       }
-      console.log(postData);
       return postData;
     },
     getPost: async (parent, {postId}, context) => {
