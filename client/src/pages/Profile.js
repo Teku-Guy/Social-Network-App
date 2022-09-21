@@ -6,19 +6,22 @@ import { useParams } from "react-router-dom";
 
 import Auth from "../utils/auth";
 import { FETCH_PROFILE_QUERY, FETCH_USER_POSTS_QUERY } from '../utils/queries';
+import PostCard from "../components/PostCard";
 
 function Profile(){
+  const user = Auth.loggedIn();
   const { username } = useParams();
-  const { data:  getPostByUser } = useQuery(FETCH_USER_POSTS_QUERY, {
-    variables: {
-      username
-    },
-  });
   const { data:  getUser } = useQuery(FETCH_PROFILE_QUERY, {
     variables: {
       username
     },
   });
+  const { loading, data } = useQuery(FETCH_USER_POSTS_QUERY, {
+    variables: {
+      username
+    },
+  });
+  const { getPostByUser: posts } = {...data};
 
   let profileLayout;
   if(!getUser){
@@ -26,12 +29,10 @@ function Profile(){
   }else {
     const {
       getUser:{
-        id,
         username,
         bio
       }
     } = getUser;
-    const { getPostByUser } = getPostByUser;
     profileLayout = (
       <Container maxWidth="xl" sx={{ p:10 }}>
         <Paper
@@ -60,7 +61,7 @@ function Profile(){
                   <Grid container spacing={3} mb={3}>
                     <Grid item>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        {getPostByUser.length} &nbsp;
+                        {Object.keys(posts || {}).length} &nbsp;
                       </Typography>
                       <Typography component="span" variant="body2" color="text">
                         Posts
@@ -68,7 +69,7 @@ function Profile(){
                     </Grid>
                     <Grid item>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        0&nbsp;
+                        {0}&nbsp;
                       </Typography>
                       <Typography component="span" variant="body2" color="text">
                         Followers
@@ -76,7 +77,7 @@ function Profile(){
                     </Grid>
                     <Grid item>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        0&nbsp;
+                        {0}&nbsp;
                       </Typography>
                       <Typography component="span" variant="body2" color="text">
                         Following
@@ -90,6 +91,23 @@ function Profile(){
               </Grid>
             </Grid>
           </Container>
+          </Box>
+          <Box>
+            {
+              loading ? (
+                <h1>Loading..</h1>
+              ) : (
+                <Grid  container spacing={4} p={2.5} >
+                  {
+                    posts && posts.map((post) => (
+                      <Grid item xs={12} sm={6} md={4} key={post.id} style={{ marginBottom: 20 }}>
+                        <PostCard post={post} />
+                      </Grid>
+                    ))
+                  }
+                </Grid>
+              )
+            }
           </Box>
         </Paper>
       </Container>

@@ -16,7 +16,8 @@ import {
   InputLabel,
   InputAdornment,
   Input,
-  Button
+  Button,
+  Container
 } from "@mui/material";
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import BadgeUnstyled from '@mui/base/BadgeUnstyled';
@@ -53,7 +54,11 @@ function SinglePost() {
 
   let postMarkup;
   if(!getPost){
-    postMarkup = <p>Loading Post..</p>
+    postMarkup = (
+      <Container maxWidth="xl" sx={{ p:10 }}>
+        <p>Loading Post..</p>
+      </Container>
+    )
   } else {
     const {
       getPost: {
@@ -69,6 +74,7 @@ function SinglePost() {
     } = getPost;
 
     postMarkup = (
+      <Container maxWidth="xl" sx={{ p:10 }}>
       <Grid container spacing={2}>
         <Grid item lg={2}>
           <Avatar alt={`${username}`} src="https://react.semantic-ui.com/images/avatar/large/molly.png" sx={{ width: 200, height: 200 }}/>
@@ -151,6 +157,7 @@ function SinglePost() {
             ))}
           </Grid>
       </Grid>
+      </Container>
     )
   }
 

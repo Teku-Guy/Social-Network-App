@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { Box, Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel, Paper } from "@mui/material";
+import { Box, Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel } from "@mui/material";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";

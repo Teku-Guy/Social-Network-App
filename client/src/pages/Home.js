@@ -32,7 +32,7 @@ function Home() {
                 {
                   posts &&
                   posts.map((post) => (
-                    <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={post.id} style={{ marginBottom: 20 }}>
+                    <Grid item xs={12} sm={6} md={4} xl={3} key={post.id} style={{ marginBottom: 20 }}>
                       <PostCard post={post} />
                     </Grid>
                   ))
