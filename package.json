@@ -16,8 +16,5 @@
     "devDependencies": {
         "concurrently": "^5.1.0"
     },
-    "homepage": "https://github.com/Teku-Guy/Social-Network-App#readme",
-    "dependencies": {
-        "cloudinary": "^1.32.0"
-    }
+    "homepage": "https://github.com/Teku-Guy/Social-Network-App#readme"
 }
