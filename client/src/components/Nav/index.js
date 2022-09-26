@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppBar,
   Box,
   Toolbar,
@@ -16,14 +16,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
+//remember to implement navLinks
 
 import Auth from '../../utils/auth';
+import { AuthContext } from '../../utils/AuthContext';
 
 const navItems  = [ {title:'Login', value: 1}, {title:'Register', value: 2} ];
 
 function Nav(props) {
-  const user = Auth.loggedIn();
-  const {data: {username}} = Auth.getProfile();
+  const { user }  = useContext(AuthContext);
   const pathName = window.location.pathname;
   const path = pathName === '/' ? 'home' : pathName.substring(1);
   const [value, setValue] = useState(path);
@@ -45,7 +46,7 @@ function Nav(props) {
   };
 
   const profile = () => {
-    window.location.assign(`/user/${username}`);
+    window.location.assign(`/user/${user.data.username}`);
   };
   const settings = () => {
     window.location.assign('/settings');
@@ -119,7 +120,7 @@ function Nav(props) {
                 <ListItemIcon>
                   <PersonIcon fontSize="small" />
                 </ListItemIcon>
-                {username}
+                {user.data.username}
               </MenuItem>
               <MenuItem key='Profile' onClick={profile}>
                 <Avatar /> Profile

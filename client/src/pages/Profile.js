@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { Avatar, Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
@@ -7,9 +7,10 @@ import { Link, useParams } from "react-router-dom";
 import Auth from "../utils/auth";
 import { FETCH_PROFILE_QUERY, FETCH_USER_POSTS_QUERY } from '../utils/queries';
 import PostCard from "../components/PostCard";
+import { AuthContext } from "../utils/AuthContext";
 
 function Profile(){
-  const user = Auth.getProfile();
+  const { user } = useContext(AuthContext);
   const { username } = useParams();
   const { data:  getUser } = useQuery(FETCH_PROFILE_QUERY, {
     variables: {
@@ -22,16 +23,18 @@ function Profile(){
     },
   });
   const { getPostByUser: posts } = {...data};
+  const edit = () => {
+    window.location.assign('/settings');
+  }
 
   const checkUser = () => {
-    console.log(user)
-    if(user.data.username === username) {
+    if(user === username) {
       return (
-        <Button variant="outlined" color="info" size="small">
+        <Button variant="outlined" color="info" size="small" onClick={edit}>
           Edit
         </Button>
       );
-    } else if(user.data === '') {
+    } else if(user === '') {
       return (
         <Button variant="outlined" color="info" size="small" as={Link} to="/login" sx={{ textDecoration: "none"}}>
           Follow

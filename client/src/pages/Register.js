@@ -1,18 +1,14 @@
+
+import React, { useState, useContext} from "react";
 import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
 import { Box, Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel } from "@mui/material";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";
-import Auth from '../utils/auth';
+import { AuthContext } from "../utils/AuthContext";
 
 function Register() {
-	let test = '';
-	const user = Auth.loggedIn();
-	if(user){
-		window.location.assign('/');
-	}
-
+	const context = useContext(AuthContext);
 	const [errors, setErrors] = useState({}); 
 
 	const { onChange, onSubmit, values } = useForm(registerUser, {
@@ -22,9 +18,8 @@ function Register() {
   });
 
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
-		update(_, { data: {register: {token}} }){
-			test = token;
-      Auth.login(token);
+		update(_, { data: {register: userData} }){
+			context.login(userData);
 		},
 		onError(err){
 			setErrors(err.graphQLErrors[0].extensions.errors);
@@ -33,8 +28,6 @@ function Register() {
 	});
 
 	function registerUser(){
-		
-		console.log(test);
 		addUser();
 	}
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useParams } from 'react-router';
 import { useMutation, useQuery } from "@apollo/client";
 import moment from 'moment';
@@ -24,14 +24,15 @@ import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 
 import { FETCH_POST_QUERY } from "../utils/queries";
 import { SUBMIT_COMMENT_MUTATION } from "../utils/mutations";
-import Auth from "../utils/auth";
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
+import { AuthContext } from "../utils/AuthContext";
 
 function SinglePost() {
-  const {data: user} = Auth.getProfile();
+  const { user } = useContext(AuthContext);
   const { postId } = useParams();
   const [comment, setComment] = useState('');
+  const commentInputRef = useRef(null);
   const { data:  getPost } = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId
@@ -41,6 +42,7 @@ function SinglePost() {
   const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
     update(){
       setComment('');
+      commentInputRef.current.blur();
     },
     variables: {
       postId,
@@ -82,7 +84,7 @@ function SinglePost() {
           <Grid item lg={10}>
             <Card sx={{ mb:2.5}}>
               <CardHeader title={`${username}`}  subheader={moment(createdAt).fromNow()}/>
-              <CardContent>
+              <CardContent disablespacing="true">
                 <Typography variant="body1">
                   {body}
                 </Typography>
@@ -111,6 +113,7 @@ function SinglePost() {
                           id="comment"
                           name="comment"
                           value={comment}
+                          ref={commentInputRef}
                           onChange={(event) => setComment(event.target.value)}
                           endAdornment={
                             <InputAdornment position="end">
@@ -124,7 +127,7 @@ function SinglePost() {
                               </Button>
                             </InputAdornment>
                           }
-                          label="Password"
+                          label="Comment"
                         />
                       </FormControl>
                       
@@ -134,7 +137,7 @@ function SinglePost() {
             )}
             {comments.map((comment) => (
               <Card sx={{ mb:0.5}} key={comment.id}>
-                <CardContent disableSpacing>
+                <CardContent disablespacing="true" >
                   <CardHeader
                     title={`${comment.username}`}
                     subheader={`${moment(comment.createdAt).fromNow()}`}
