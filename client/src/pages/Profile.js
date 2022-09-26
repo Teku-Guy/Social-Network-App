@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { Avatar, Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
@@ -28,9 +27,9 @@ function Profile(){
   }
 
   const checkUser = () => {
-    if(user === username) {
+    if(user.data.username === username) {
       return (
-        <Button variant="outlined" color="info" size="small" onClick={edit}>
+        <Button variant="outlined" color="secondary" size="small" onClick={edit}>
           Edit
         </Button>
       );
