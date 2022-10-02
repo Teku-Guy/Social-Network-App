@@ -49,6 +49,7 @@ export const FETCH_PROFILE_QUERY = gql`
     getUser(username: $username){
       id
       username
+      profileImgUrl
       bio
     }
   }

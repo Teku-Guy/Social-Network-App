@@ -43,7 +43,6 @@ const AuthProvider = (props) => {
 
   function login(userData) {
     Auth.login(userData.token);
-    console.log(userData);
     dispatch({
       type: 'LOGIN',
       payload: userData
@@ -54,8 +53,6 @@ const AuthProvider = (props) => {
     Auth.logout();
     dispatch({ type: 'LOGOUT' });
   }
-  
-  console.log(state.user);
 
   return (
     <AuthContext.Provider

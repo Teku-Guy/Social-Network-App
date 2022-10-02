@@ -55,6 +55,7 @@ function Profile(){
     const {
       getUser:{
         username,
+        profileImgUrl,
         bio
       }
     } = getUser;
@@ -73,7 +74,7 @@ function Profile(){
             <Container>
               <Grid item xs={12} justifyContent="center" mx="auto">
                 <Box mt={{ xs: -16, md: -20 }} textAlign="center">
-                  <Avatar src="https://react.semantic-ui.com/images/avatar/large/molly.png" alt={`${username}`} sx={{ width: "110px", height: "110px", fontSize: "1rem" }} />
+                  <Avatar src={profileImgUrl} alt={`${username}`} sx={{ width: "110px", height: "110px", fontSize: "1rem" }} />
                 </Box>
                 <Grid container justifyContent="center" py={6}>
                   <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md:1 }}>
