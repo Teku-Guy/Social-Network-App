@@ -1,9 +1,20 @@
-
-
+import React, { useState, useContext } from 'react';
 import { Button } from "@mui/material";
+import { useMutation } from '@apollo/client';
+
 import { openUploadWidget } from "../../utils/CloudinaryService";
+import { AuthContext } from '../../utils/AuthContext';
+import {UPLOAD_PROFILE_IMG_URL} from '../../utils/mutations';
 
 const ImageUpload = (props) => {
+  const {user} = useContext(AuthContext);
+  const [imgUrl, setImgUrl] = useState('');
+  const [imgUpload] = useMutation(UPLOAD_PROFILE_IMG_URL, {
+    variables: {
+      username: user.data.username,
+      url: imgUrl
+    }
+  })
   const uploadImageWidget = () => {
     let myUploadWidget = openUploadWidget(
       {
@@ -15,9 +26,17 @@ const ImageUpload = (props) => {
         sources: ["local", "url", "camera"]
       },
       function (error, result) {
+        console.log(result.event);
         if (!error && result.event === "success") {
-          props.onImageUpload(result.info.secure_url);
+          setImgUrl(result.info.secure_url);
+          console.log(imgUrl);
+          props.onImageUpload(result.info.public_id);
         }
+        if (!error && result.event === "close") {
+          imgUpload();
+        }
+        console.log(imgUrl);
+
       }
     );
     myUploadWidget.open();

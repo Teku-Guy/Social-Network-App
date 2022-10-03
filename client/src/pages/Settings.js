@@ -6,7 +6,7 @@ import ImageUpload from "../components/ImageUpload";
 
 function Settings(){
   const { user } = useContext(AuthContext);
-  const [imagesUploadedList, setImagesUploadedList] = useState([]);
+  const [imgId, setImgId] = useState([]);
 
   const cld = new Cloudinary({
     cloud: {
@@ -17,8 +17,8 @@ function Settings(){
   //upload to the cloud then upload to server http as string
 
   const onImageUploadHandler = (publicId) => {
-    setImagesUploadedList((prevState) => [...prevState, publicId]);
-    console.log(imagesUploadedList[2])
+    setImgId((prevState) => [...prevState, publicId]);
+    console.log(imgId[imgId.length - 1])
   };
 
   return (
