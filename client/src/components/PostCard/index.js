@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from "react";
 import { Card, CardActions, CardContent, CardMedia, Typography, Avatar, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 
-import Auth from '../../utils/auth';
+import { AuthContext } from "../../utils/AuthContext";
 import LikeButton from '../LikeButton';
 import DeleteButton from '../DeleteButton';
 
@@ -13,7 +13,7 @@ function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes }
 }) {
 
-  const {data: user} = Auth.getProfile();
+  const { user } = useContext(AuthContext);
   const toComment = () => {
     window.location.assign(`/posts/${id}`);
   };
@@ -46,13 +46,13 @@ function PostCard({
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ padding: "24px" }}>
-        <LikeButton user={user} post={{id, likes, likeCount }} />
+        <LikeButton user={user.data} post={{id, likes, likeCount }} />
         <BadgeUnstyled showZero badgeContent={commentCount}>
           <IconButton onClick={toComment}>
             <ChatBubbleOutlineIcon />
           </IconButton>
         </BadgeUnstyled>
-        {user && user.username === username && <DeleteButton postId={id} />}
+        {user && user.data.username === username && <DeleteButton postId={id} />}
       </CardActions>
     </Card>
   )

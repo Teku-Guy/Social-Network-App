@@ -29,6 +29,7 @@ export const LOGIN_USER = gql`
         email
         username
         createdAt
+        profileImgUrl
       }
     }
   }
@@ -103,5 +104,11 @@ export const DELETE_COMMENT_MUTATION = gql`
       }
       commentCount
     }
+  }
+`;
+
+export const UPLOAD_PROFILE_IMG_URL = gql`
+  mutation uploadProfileImg($username: String!, $url: String!){
+    uploadProfileImg(username: $username, url: $url)
   }
 `;

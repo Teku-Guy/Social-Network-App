@@ -6,12 +6,7 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import {setContext} from "@apollo/client/link/context"
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
-import { Box, Container } from '@mui/material';
+
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -22,12 +17,8 @@ import '@fontsource/roboto/700.css';
 import './App.css'
 
 import {theme} from './utils/theme';
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import SinglePost from "./pages/SinglePost";
-import Nav from "./components/Nav";
-import Profile from "./pages/Profile";
+import { AuthProvider } from "./utils/AuthContext";
+import  AppRouter from "./components/AppRouter";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -49,22 +40,11 @@ const client = new ApolloClient({
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ApolloProvider client={client} >
-        <Router>
-          <CssBaseline />
-          <Container maxWidth="xl" sx={{ p:3 }}>
-            <Nav />
-            <Box component="main" sx={{ pt:10, display: 'flex' }}>
-                <Routes>
-                  <Route exact path="/" element={<Home />} />
-                  <Route exact path="/login" element={<Login />} />
-                  <Route exact path="/register" element={<Register />} />
-                  <Route exact path="/posts/:postId" element={<SinglePost />} />
-                  <Route exact path="/user/:userID" element={<Profile />} />
-                </Routes>
-            </Box>
-          </Container>
-        </Router>
+        <AuthProvider>
+          <AppRouter />
+        </AuthProvider>
       </ApolloProvider>
     </ThemeProvider>
   );

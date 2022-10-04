@@ -1,17 +1,14 @@
+
+import React, { useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
 import { Box, Button, FormControl, FormHelperText, Grid, Input, InputLabel } from "@mui/material";
 
 import { LOGIN_USER } from '../utils/mutations';
 import { useForm } from "../utils/helpers";
-import Auth from '../utils/auth';
+import { AuthContext } from "../utils/AuthContext";
 
 function Login(props) {
-	const user = Auth.loggedIn();
-	if(user){
-		window.location.assign('/');
-	}
-
+	const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -22,14 +19,12 @@ function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, 
       {
-        data: {login: {token}}
+        data: {login: userData}
       }
     ) {
-			// console.log(login.token)
-      Auth.login(token);
+      context.login(userData);
     },
     onError(err) {
-      console.log(err.graphQLErrors[0].extensions.errors)
 			setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values

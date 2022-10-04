@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppBar,
   Box,
   Toolbar,
@@ -10,19 +10,21 @@ import { AppBar,
   Tooltip,
   Menu,  
   Tab,
-  Tabs} from '@mui/material';
+  Tabs,
+  Container} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
+//remember to implement navLinks
 
 import Auth from '../../utils/auth';
+import { AuthContext } from '../../utils/AuthContext';
 
 const navItems  = [ {title:'Login', value: 1}, {title:'Register', value: 2} ];
 
 function Nav(props) {
-  const user = Auth.loggedIn();
-  const {data: {username}} = Auth.getProfile();
+  const { user }  = useContext(AuthContext);
   const pathName = window.location.pathname;
   const path = pathName === '/' ? 'home' : pathName.substring(1);
   const [value, setValue] = useState(path);
@@ -42,9 +44,17 @@ function Nav(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const profile = () => {
+    window.location.assign(`/user/${user.data.username}`);
+  };
+  const settings = () => {
+    window.location.assign('/settings');
+  };
+  console.log(user)
   
   const navBar = user ? (
-    <>
+    <Container maxWidth="xl" sx={{ p:3 }}>
     <AppBar component="nav">
       <Toolbar>
         <Typography
@@ -69,7 +79,7 @@ function Nav(props) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Avatar alt="Remy Sharp" src="https://react.semantic-ui.com/images/avatar/large/molly.png" />
+                <Avatar alt="Remy Sharp" src={user.data.profileImgUrl} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -111,12 +121,12 @@ function Nav(props) {
                 <ListItemIcon>
                   <PersonIcon fontSize="small" />
                 </ListItemIcon>
-                {username}
+                {user.data.username}
               </MenuItem>
-              <MenuItem key='Profile' onClick={handleClose}>
+              <MenuItem key='Profile' onClick={profile}>
                 <Avatar /> Profile
               </MenuItem>
-              <MenuItem key='Account' onClick={handleClose}>
+              <MenuItem key='Account' onClick={settings}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
@@ -132,9 +142,9 @@ function Nav(props) {
           </Box>
       </Toolbar>
     </AppBar>
-    </>
+    </Container>
   ) : (
-    <>
+    <Container maxWidth="xl" sx={{ p:3 }}>
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -167,7 +177,7 @@ function Nav(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      </>
+    </Container>
   );
 
   return navBar;

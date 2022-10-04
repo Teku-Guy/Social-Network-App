@@ -1,26 +1,32 @@
-const { AuthenticationError, UserInputError } = require('apollo-server-express');
-const { GraphQLUpload } = require('graphql-upload');
-const path = require('path');
-const fs = require('fs');
+const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
 
 const { User, Post }= require('../models');
 const { signToken } = require('../utils/auth');
 const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
 
-const resolvers = { 
-  Upload: GraphQLUpload,
+const resolvers = {
   Query: { 
     users: async (parent, args, context) => {
       const userData = await User.find();
       return userData;
     },
-    user: async (parent, args, context) => {
-      const userData = await User.findOne({'username': args.username});
+    getUser: async (parent, args, context) => {
+      const userData = await User.findOne({username: args.username, id: args.userId});
+      if(!userData){
+        throw new Error('Post not found');
+      }
       return userData;
     },
     getPosts: async(parent, args, context) => {
       const postsData = await Post.find().sort({ createdAt: -1});
       return postsData;
+    },
+    getPostByUser: async (parent, args, context) => {
+      const postData = await (await Post.find()).filter(post => post.username === args.username);
+      if(postData.length <= 0){
+        throw new Error('User has no posts');
+      }
+      return postData;
     },
     getPost: async (parent, {postId}, context) => {
       const postData = await Post.findById(postId);
@@ -50,6 +56,11 @@ const resolvers = {
           errors: {username: 'This username is taken'}
         })
       }
+      if(password.length < 6){
+        throw new UserInputError('Password too short', {
+          errors: {password: 'Password must be at least 6 characters'}
+        })
+      }
       const user = await User.create({
         email, 
         username, 
@@ -70,7 +81,7 @@ const resolvers = {
 
       const user = await User.findOne({username});
 
-      if (!user) {
+      if (!user || user === '') {
         errors.general = 'User not found';
         throw new UserInputError('User not found', { errors });
       }
@@ -188,17 +199,10 @@ const resolvers = {
     },
     addFriend: async (parents, args) => {},
     removeFriend: async (parents, args) => {},
-		uploadFile: async (parents, { file }) => {
-      const {createReadStream, filename, mimetype, encoding } = await file;
-
-      const stream = createReadStream()
-      const pathName = path.join(__dirname, `/public/images/${filename}`);
-      await stream.pipe(fs.createWriteStream( ))
-
-      return {
-        url: `http://localhost:3001/images/${filename}`
-      }
-    }
+    saveProfileImage: async (parents, {user_id, url}) => {
+      const userData = await User.findOneAndUpdate({id: user_id}, {profileImgUrl: url});
+      return userData;
+    },
   }
 };
 

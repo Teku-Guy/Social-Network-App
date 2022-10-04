@@ -5,16 +5,10 @@ const typeDefs = gql`
 		id: ID!
 		username: String!
 		email: String!
-		posts: [Post]
-		friends: [User]
-		token: String!
+		bio: String
+		profileImgUrl: String
 		createdAt: String
-	}
-
-	scalar Upload
-	
-	type File{
-		url: String!
+		token: String!
 	}
 
 	type Post{
@@ -48,7 +42,8 @@ const typeDefs = gql`
 		users: [User]
 		getPosts: [Post]
 		getPost(postId: ID!): Post
-		user(userId: ID, username: String): User
+		getPostByUser(username: String): [Post]
+		getUser(userId: ID, username: String): User
 	}
 	
 	input RegisterInput {
@@ -68,7 +63,7 @@ const typeDefs = gql`
 		likePost(postId: ID!): Post!
 		addFriend(user_id: Int): User!
 		removeFriend(user_id: Int): User!
-		uploadFile(file: Upload!): File!
+		saveProfileImage(user_id: Int!, url: String!): String!
 	}
 
 `;
