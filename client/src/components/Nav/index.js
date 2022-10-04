@@ -51,6 +51,7 @@ function Nav(props) {
   const settings = () => {
     window.location.assign('/settings');
   };
+  console.log(user)
   
   const navBar = user ? (
     <Container maxWidth="xl" sx={{ p:3 }}>
@@ -78,7 +79,7 @@ function Nav(props) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Avatar alt="Remy Sharp" src="https://react.semantic-ui.com/images/avatar/large/molly.png" />
+                <Avatar alt="Remy Sharp" src={user.data.profileImgUrl} />
               </IconButton>
             </Tooltip>
             <Menu

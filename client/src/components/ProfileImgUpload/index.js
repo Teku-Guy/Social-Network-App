@@ -6,7 +6,7 @@ import { openUploadWidget } from "../../utils/CloudinaryService";
 import { AuthContext } from '../../utils/AuthContext';
 import {UPLOAD_PROFILE_IMG_URL} from '../../utils/mutations';
 
-const ImageUpload = (props) => {
+const ProfileImgUpload = (props) => {
   const {user} = useContext(AuthContext);
   const [imgUrl, setImgUrl] = useState('');
   const [imgUpload] = useMutation(UPLOAD_PROFILE_IMG_URL, {
@@ -49,4 +49,4 @@ const ImageUpload = (props) => {
   );
 };
 
-export default ImageUpload;
+export default ProfileImgUpload;

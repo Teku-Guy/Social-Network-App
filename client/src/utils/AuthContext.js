@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 import Auth from './auth';
 
 const initialState = {
-  user: null
+  user: ''
 };
 
 if(Auth.loggedIn()) {
@@ -16,7 +16,7 @@ if(Auth.loggedIn()) {
 }
 
 const AuthContext = createContext({
-  user: null,
+  user: '',
   login: (userData) => {},
   logout: () => {}
 });
