@@ -16,9 +16,10 @@ if(Auth.loggedIn()) {
 }
 
 const AuthContext = createContext({
-  user: '',
+  ...initialState,
   login: (userData) => {},
-  logout: () => {}
+  logout: () => {},
+  updateUser: (userData) => {}
 });
 
 function authReducer(state, action) {
@@ -32,6 +33,11 @@ function authReducer(state, action) {
       return {
         ...state,
         user: null
+      };
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        user: action.payload
       };
     default:
       return state;
@@ -54,9 +60,16 @@ const AuthProvider = (props) => {
     dispatch({ type: 'LOGOUT' });
   }
 
+  function updateUser(userData){
+    dispatch({
+      type: 'UPDATE_USER',
+      payload: userData
+    })
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user: state.user, login, logout }}
+      value={{ user: state.user, login, logout, updateUser }}
       {...props}
     />
   );

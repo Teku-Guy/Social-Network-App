@@ -3,7 +3,6 @@ import { useQuery } from "@apollo/client";
 import { Avatar, Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 
-import Auth from "../utils/auth";
 import { FETCH_PROFILE_QUERY, FETCH_USER_POSTS_QUERY } from '../utils/queries';
 import PostCard from "../components/PostCard";
 import { AuthContext } from "../utils/AuthContext";
@@ -53,12 +52,10 @@ function Profile(){
     profileLayout = <p>Loading User..</p>;
   }else {
     const {
-      getUser:{
         username,
         profileImgUrl,
         bio
-      }
-    } = getUser;
+    } = getUser.getUser;
     profileLayout = (
       <Container maxWidth="xl" sx={{ p:10 }}>
         <Paper
