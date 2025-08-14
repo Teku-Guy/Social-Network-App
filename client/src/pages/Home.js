@@ -12,6 +12,7 @@ function Home() {
   const user = Auth.loggedIn();
   const { loading, data } = useQuery(FETCH_ALL_POSTS_QUERY);
   const { getPosts: posts } = {...data}
+  console.log(posts);
 
   return (
     <Container maxWidth="xl" sx={{ p:3 }}>
