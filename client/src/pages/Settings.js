@@ -18,7 +18,6 @@ function Settings(){
 
   const onImageUploadHandler = (publicId) => {
     setImgId((prevState) => [...prevState, publicId]);
-    console.log(imgId[imgId.length - 1])
   };
 
   return (

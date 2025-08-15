@@ -10,7 +10,7 @@ import LikeButton from '../LikeButton';
 import DeleteButton from '../DeleteButton';
 
 function PostCard({
-  post: { body, createdAt, id, username, likeCount, commentCount, likes }
+  post: { body, createdAt, id, username, likeCount, commentCount, likes, profileImgUrl }
 }) {
 
   const { user } = useContext(AuthContext);
@@ -32,7 +32,7 @@ function PostCard({
         border: '2px solid #121212',
         margin: '-48px 32px 0 auto',
         '& > img': { margin: 0 }}}
-        src={'https://i.pravatar.cc/300'}
+        src={profileImgUrl || 'https://i.pravatar.cc/300'}
       />
       <CardContent sx={{ padding: "24px" }}>
         <Typography variant="subtitle1">

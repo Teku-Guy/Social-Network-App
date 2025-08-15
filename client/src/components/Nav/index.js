@@ -170,7 +170,7 @@ function Nav(props) {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}> 
             <Tabs value={value} onChange={handleChange} aria-label="wrapped label tabs">
               {navItems.map((item) => (
-                <Tab href={`/${item.title}`} value={item.title} label={item.title} style={{ fontSize:20, textDecoration: 'none', color: 'inherit' }} />
+                <Tab key={item.value} href={`/${item.title}`} value={item.title} label={item.title} style={{ fontSize:20, textDecoration: 'none', color: 'inherit' }} />
               ))}
             </Tabs>
           </Box>

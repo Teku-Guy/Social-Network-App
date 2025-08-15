@@ -8,7 +8,6 @@ export const url = (public_id, options) => {
         secure: true
       }
     );
-    console.log(cl)
     return cl.url(public_id, scOptions);
   } catch (e) {
     console.error(e);

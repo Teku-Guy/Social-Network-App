@@ -9,6 +9,7 @@ import { AuthContext } from "../../utils/AuthContext";
 import LikeButton from '../LikeButton';
 import DeleteButton from '../DeleteButton';
 
+function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes }
 }) {
 

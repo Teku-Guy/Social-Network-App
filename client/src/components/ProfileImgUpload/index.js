@@ -26,16 +26,13 @@ const ProfileImgUpload = (props) => {
         sources: ["local", "url", "camera"]
       },
       function (error, result) {
-        console.log(result.event);
         if (!error && result.event === "success") {
           setImgUrl(result.info.secure_url);
-          console.log(imgUrl);
           props.onImageUpload(result.info.public_id);
         }
         if (!error && result.event === "close") {
           imgUpload();
         }
-        console.log(imgUrl);
 
       }
     );

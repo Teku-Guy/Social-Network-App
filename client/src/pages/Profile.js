@@ -21,7 +21,7 @@ function Profile(){
       username
     },
   });
-  const { getPostByUser: posts } = {...data};
+  const { getPostByUser: posts } = data || {};
   const edit = () => {
     window.location.assign('/settings');
   }
@@ -85,7 +85,7 @@ function Profile(){
                   <Grid container spacing={3} mb={3}>
                     <Grid item>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        {Object.keys(posts || {}).length} &nbsp;
+                        {posts ? posts.length : 0} &nbsp;
                       </Typography>
                       <Typography component="span" variant="body2" color="text">
                         Posts

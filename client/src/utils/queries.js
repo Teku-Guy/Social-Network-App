@@ -6,7 +6,7 @@ export const FETCH_ALL_POSTS_QUERY = gql`
       id
       body
       createdAt
-      username 
+      username
       likeCount
       likes {
         username

@@ -11,7 +11,7 @@ import { Container } from "@mui/material";
 function Home() {
   const user = Auth.loggedIn();
   const { loading, data } = useQuery(FETCH_ALL_POSTS_QUERY);
-  const { getPosts: posts } = {...data}
+  const { getPosts: posts } = data || {};
 
   return (
     <Container maxWidth="xl" sx={{ p:3 }}>
