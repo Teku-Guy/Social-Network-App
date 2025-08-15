@@ -1,8 +1,10 @@
-const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
+import { AuthenticationError, UserInputError, ApolloError } from 'apollo-server-express';
 
-const { User, Post }= require('../models');
-const { signToken } = require('../utils/auth');
-const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
+import { User, Post } from '../models/index.js';
+import auth from '../utils/auth.js';
+import { validateRegisterInput, validateLoginInput } from '../utils/validators.js';
+
+const { signToken } = auth;
 
 const resolvers = {
   Query: { 
@@ -206,4 +208,4 @@ const resolvers = {
   }
 };
 
-module.exports = resolvers;
+export default resolvers;

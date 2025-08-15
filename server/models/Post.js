@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const commentSchema = require('./Comment');
+import { Schema, model } from 'mongoose';
+import commentSchema from './Comment.js';
 
 const PostSchema = new Schema(
   {
@@ -43,4 +43,4 @@ PostSchema.virtual('likeCount').get(function() {
 
 const Post = model('Post', PostSchema);
 
-module.exports = Post;
+export default Post;

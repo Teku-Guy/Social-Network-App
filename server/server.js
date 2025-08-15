@@ -1,14 +1,19 @@
-const express = require('express');
-const {graphqlUploadExpress} = require('graphql-upload');
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers } = require('./schemas');
-const { authMiddleware } = require('./utils/auth');
-const db = require('./config/connection');
-const path = require('path');
-const {InMemoryLRUCache} = require('@apollo/utils.keyvaluecache');
+import express from 'express';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { ApolloServer } from 'apollo-server-express';
+import { typeDefs, resolvers } from './schemas/index.js';
+import auth from './utils/auth.js';
+import db from './config/connection.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 const {
   ApolloServerPluginLandingPageLocalDefault,
-} = require('apollo-server-core');
+} = from 'apollo-server-core';
+
+const { authMiddleware } = auth;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
