@@ -10,12 +10,14 @@
     "seed": "node seeders/seeds.js"
   },
   "dependencies": {
-    "@apollo/utils.keyvaluecache": "^1.0.1",
-    "bcryptjs": "^3.0.2",
+    "@apollo/server": "^4.10.0",
+    "@apollo/server-plugin-landing-page-local-default": "^4.0.0",
+    "@apollo/utils.keyvaluecache": "^3.1.0",
     "cloudinary": "^1.32.0",
-    "faker": "^5.5.3",
+    "cors": "^2.8.5",
+    "express": "^5.0.1",
     "graphql": "^16.6.0",
-    "graphql-upload": "^13.0.0",
+    "graphql-upload": "^16.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.2"
   },
