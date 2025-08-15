@@ -11,7 +11,7 @@
   "dependencies": {
     "@apollo/utils.keyvaluecache": "^1.0.1",
     "apollo-server-express": "^3.6.7",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^1.32.0",
     "express": "^4.18.1",
     "faker": "^5.5.3",
