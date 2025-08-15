@@ -199,9 +199,9 @@ const resolvers = {
     },
     addFriend: async (parents, args) => {},
     removeFriend: async (parents, args) => {},
-    saveProfileImage: async (parents, {user_id, url}) => {
-      const userData = await User.findOneAndUpdate({id: user_id}, {profileImgUrl: url});
-      return userData;
+    uploadProfileImg: async (parents, {username, url}) => {
+      const userData = await User.findOneAndUpdate({username: username}, {profileImgUrl: url});
+      return "Profile image updated successfully";
     },
   }
 };

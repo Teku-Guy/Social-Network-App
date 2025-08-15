@@ -63,7 +63,7 @@ const typeDefs = gql`
 		likePost(postId: ID!): Post!
 		addFriend(user_id: Int): User!
 		removeFriend(user_id: Int): User!
-		saveProfileImage(user_id: Int!, url: String!): String!
+		uploadProfileImg(username: String!, url: String!): String!
 	}
 
 `;

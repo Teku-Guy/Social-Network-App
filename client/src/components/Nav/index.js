@@ -51,7 +51,6 @@ function Nav(props) {
   const settings = () => {
     window.location.assign('/settings');
   };
-  console.log(user)
   
   const navBar = user ? (
     <Container maxWidth="xl" sx={{ p:3 }}>
