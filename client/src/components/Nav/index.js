@@ -51,7 +51,9 @@ function Nav(props) {
   const settings = () => {
     window.location.assign('/settings');
   };
+  debugger
   console.log(user)
+  debugger
   
   const navBar = user ? (
     <Container maxWidth="xl" sx={{ p:3 }}>
@@ -88,29 +90,31 @@ function Nav(props) {
               open={open}
               onClose={handleClose}
               onClick={handleClose}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: 'visible',
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                  mt: 1.5,
-                  '& .MuiAvatar-root': {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  '&:before': {
-                    content: '""',
-                    display: 'block',
-                    position: 'absolute',
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: 'background.paper',
-                    transform: 'translateY(-50%) rotate(45deg)',
-                    zIndex: 0,
+              slotProps={{
+                paper: {
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
                   },
                 },
               }}
@@ -171,7 +175,7 @@ function Nav(props) {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}> 
             <Tabs value={value} onChange={handleChange} aria-label="wrapped label tabs">
               {navItems.map((item) => (
-                <Tab href={`/${item.title}`} value={item.title} label={item.title} style={{ fontSize:20, textDecoration: 'none', color: 'inherit' }} />
+                <Tab key={item.title} href={`/${item.title}`} value={item.title} label={item.title} style={{ fontSize:20, textDecoration: 'none', color: 'inherit' }} />
               ))}
             </Tabs>
           </Box>

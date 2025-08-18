@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { IconButton } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import BadgeUnstyled from '@mui/base/BadgeUnstyled';
+import Badge from '@mui/material/Badge';
 
 import { LIKE_POST_MUTATION } from '../../utils/mutations';
 
@@ -40,9 +40,9 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
   )
 
   return (
-      <BadgeUnstyled showZero badgeContent={likeCount}>
+      <Badge showZero badgeContent={likeCount} color="primary">
         {likeButton}
-      </BadgeUnstyled>
+      </Badge>
   );
 }
 

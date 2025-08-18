@@ -1,25 +1,44 @@
-const faker = require('faker');
+import { faker } from '@faker-js/faker';
+import db from '../config/connection.js';
+import Models from '../models/index.js';
+import Post from '../models/Post.js';
+import bcrypt from 'bcryptjs';
 
-const db = require('../config/connection');
-const { User } = require('../models');
+const { User } = Models;
 
+// Wait for DB connection then seed
 db.once('open', async () => {
-  await User.deleteMany({});
+  try {
+    await User.deleteMany({});
+    await Post.deleteMany({});
 
-  const userData = [];
+    const userData = Array.from({ length: 5 }, () => ({
+      username: faker.internet.username(),
+      email: faker.internet.email(),
+      profileImgUrl: faker.image.avatar(),
+      password: bcrypt.hashSync('test123', 10),
+    }));
 
-  //Create Users
-  for (let i = 0; i < 5; i++) {
-      const username = faker.internet.userName();
-      const email = faker.internet.email();
-      const password = "test123";
+    console.log(faker.image.avatar());
+    const createdUsers = await User.insertMany(userData);
 
-      userData.push({username, email, password});
+    const postsData = createdUsers.flatMap(user =>
+      Array.from({ length: 3 }, () => ({
+        body: faker.lorem.sentence(),
+        //username: user.username,
+        user: user._id,
+
+        createdAt: new Date().toISOString()
+      }))
+    );
+
+    await Post.insertMany(postsData);
+
+    console.log('Seeded users:', createdUsers.length);
+    console.log('Seeded posts:', postsData.length);
+  } catch (err) {
+    console.error('Seeding error:', err);
+  } finally {
+    process.exit(0);
   }
-  await User.insertMany(userData);
-
-  
-
-  console.log('all done!');
-  process.exit(0);
 });

@@ -41,10 +41,8 @@ export const CREATE_POST_MUTATION = gql`
       id
       body
       createdAt
-      user{
-        username
-        profileImgUrl
-      }
+      username
+      profileImgUrl
       likeCount
       likes {
         username

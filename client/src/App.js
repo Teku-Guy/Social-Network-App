@@ -21,8 +21,9 @@ import { AuthProvider } from "./utils/AuthContext";
 import  AppRouter from "./components/AppRouter";
 
 const httpLink = createHttpLink({
-  uri: "/graphql",
+  uri: '/graphql',
 });
+
 const authLink = setContext((_, {headers}) => {
   const token = localStorage.getItem('id_token');
   return {

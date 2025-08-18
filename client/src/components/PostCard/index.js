@@ -3,19 +3,23 @@ import { Card, CardActions, CardContent, CardMedia, Typography, Avatar, IconButt
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import BadgeUnstyled from '@mui/base/BadgeUnstyled';
+import Badge from '@mui/material/Badge';
 
 import { AuthContext } from "../../utils/AuthContext";
 import LikeButton from '../LikeButton';
 import DeleteButton from '../DeleteButton';
 
 function PostCard({
-  post: { body, createdAt, id, likeCount, commentCount, likes, user }
+  post: { body, createdAt, id, likeCount, commentCount, likes, user, username, profileImgUrl }
 }) {
+  // Current logged-in user from context (may be undefined)
+  const { user: currentUser } = useContext(AuthContext) || {};
 
-  const { user: {data} } = useContext(AuthContext);
-  console.log(user);
-  const imgUrl = user.profileImgUrl;
+  console.log(body);
+  // Support both shapes: nested `user` OR flattened fields on Post
+  const authorUsername = user?.username ?? username ?? 'Unknown';
+  const authorAvatar = user?.profileImgUrl ?? profileImgUrl ?? '/default-avatar.png';
+
   const toComment = () => {
     window.location.assign(`/posts/${id}`);
   };
@@ -24,7 +28,7 @@ function PostCard({
     <Card sx={{ maxWidth: "400px", margin: 'auto' }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt="post image"
         height="140"
         image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
       />
@@ -33,14 +37,15 @@ function PostCard({
         height: 50,
         border: '2px solid #121212',
         margin: '-48px 32px 0 auto',
-        '& > img': { margin: 0 }}}
-        src={imgUrl}
+        '& > img': { margin: 0 }
+      }}
+      src={authorAvatar}
       />
       <CardContent sx={{ padding: "24px" }}>
         <Typography variant="subtitle1">
-          {user.username}
+          {authorUsername}
         </Typography>
-        <Typography variant="subtitle2" as={Link} to={`/posts/${id}`} sx={{ textDecoration: 'none' }} color='secondary'>
+        <Typography variant="subtitle2" component={Link} to={`/posts/${id}`} sx={{ textDecoration: 'none' }} color='secondary'>
           {moment(createdAt).fromNow(true)}
         </Typography>
         <Typography variant="body1" color="text.secondary">
@@ -48,16 +53,18 @@ function PostCard({
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ padding: "24px" }}>
-        <LikeButton user={data} post={{id, likes, likeCount }} />
-        <BadgeUnstyled showZero badgeContent={commentCount}>
+        <LikeButton user={currentUser} post={{ id, likes, likeCount }} />
+        <Badge showZero badgeContent={commentCount} color="primary">
           <IconButton onClick={toComment}>
             <ChatBubbleOutlineIcon />
           </IconButton>
-        </BadgeUnstyled>
-        {data && data.username === user.username && <DeleteButton postId={id} />}
+        </Badge>
+        {currentUser && currentUser.username === authorUsername && (
+          <DeleteButton postId={id} />
+        )}
       </CardActions>
     </Card>
-  )
+  );
 }
 
-export default PostCard
+export default PostCard;

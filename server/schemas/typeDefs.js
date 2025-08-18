@@ -1,71 +1,75 @@
-const { gql } = require('apollo-server-express');
+import gql from 'graphql-tag';
 
 const typeDefs = gql`
-	type User {
-		id: ID!
-		username: String!
-		email: String!
-		bio: String
-		profileImgUrl: String
-		createdAt: String
-		token: String!
-	}
+  scalar Upload
 
-	type Post{
-		id: ID!
-		body: String!
-		createdAt: String!
-		username: String!
-		comments: [Comment]!
-		likes: [Like]!
-		likeCount: Int!
-		commentCount: Int!
-	}
-	type Comment {
-		id: ID!
-		body: String!
-		username: String!
-		createdAt: String!
-	}
-	type Like {
-		id: ID!
-		createdAt: String!
-		username: String!
-	}
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    bio: String
+    profileImgUrl: String
+    createdAt: String
+    token: String!
+  }
 
-	type Auth {
-		token: ID!
-		user: User!
-	}
+  type Post {
+  id: ID!
+  body: String!
+  createdAt: String!
+  username: String!
+  profileImgUrl: String
+  comments: [Comment]!
+  likes: [Like]!
+  likeCount: Int!
+  commentCount: Int!
+}
 
-	type Query{
+  type Comment {
+    id: ID!
+    body: String!
+    username: String!
+    createdAt: String!
+  }
+
+  type Like {
+    id: ID!
+    createdAt: String!
+    username: String!
+  }
+
+  type Auth {
+    token: ID!
+    user: User!
+  }
+
+  type Query{
 		users: [User]
 		getPosts: [Post]
 		getPost(postId: ID!): Post
 		getPostByUser(username: String): [Post]
 		getUser(userId: ID, username: String): User
 	}
-	
-	input RegisterInput {
-		username: String!
-		password: String!
-		email: String!
-	}
 
-	type Mutation{
-		register(registerInput: RegisterInput): Auth!
-		login(username: String!, password: String!): Auth!
-		destroyUser(email: String!): User!
-		addPost(body: String!): Post!
-		deletePost(postId: ID): String!
-		submitComment(postId: ID!, body: String!): Post!
-		deleteComment(postId: ID!, commentId: ID!): Post!
-		likePost(postId: ID!): Post!
-		addFriend(user_id: Int): User!
-		removeFriend(user_id: Int): User!
-		saveProfileImage(user_id: Int!, url: String!): String!
-	}
+  input RegisterInput {
+    username: String!
+    password: String!
+    email: String!
+  }
 
+  type Mutation {
+    register(registerInput: RegisterInput): Auth!
+    login(username: String!, password: String!): Auth!
+    destroyUser(email: String!): User!
+    addPost(body: String!): Post!
+    deletePost(postId: ID): String!
+    submitComment(postId: ID!, body: String!): Post!
+    deleteComment(postId: ID!, commentId: ID!): Post!
+    likePost(postId: ID!): Post!
+    addFriend(user_id: Int): User!
+    removeFriend(user_id: Int): User!
+    saveProfileImage(user_id: Int!, url: String!): String!
+  }
 `;
 
-module.exports = typeDefs;
+export default typeDefs;

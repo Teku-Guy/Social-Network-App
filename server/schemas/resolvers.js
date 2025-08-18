@@ -1,209 +1,235 @@
-const { AuthenticationError, UserInputError, ApolloError } = require('apollo-server-express');
+// server/schemas/resolvers.js (ESM + Apollo v5)
 
-const { User, Post }= require('../models');
-const { signToken } = require('../utils/auth');
-const { validateRegisterInput, validateLoginInput } = require('../utils/validators');
+import { GraphQLError } from 'graphql';
+import Models from '../models/index.js';
+import { signToken } from '../utils/auth.js';
+import { validateRegisterInput, validateLoginInput } from '../utils/validators.js';
+
+const { User, Post } = Models;
 
 const resolvers = {
-  Query: { 
-    users: async (parent, args, context) => {
-      const userData = await User.find();
-      return userData;
+  Query: {
+    users: async () => {
+      return User.find();
     },
-    getUser: async (parent, args, context) => {
-      const userData = await User.findOne({username: args.username, id: args.userId});
-      if(!userData){
-        throw new Error('Post not found');
+
+    getUser: async (_, args) => {
+      const userData = await User.findOne({ username: args.username, id: args.userId });
+      if (!userData) {
+        throw new GraphQLError('User not found', { extensions: { code: 'BAD_USER_INPUT' } });
       }
       return userData;
     },
-    getPosts: async(parent, args, context) => {
-      const postsData = await Post.find().sort({ createdAt: -1});
-      return postsData;
+
+    getPosts: async () => {
+      return Post.find().sort({ createdAt: -1 });
     },
-    getPostByUser: async (parent, args, context) => {
-      const postData = await (await Post.find()).filter(post => post.username === args.username);
-      if(postData.length <= 0){
-        throw new Error('User has no posts');
+
+    getPostByUser: async (_, args) => {
+      const postData = (await Post.find()).filter((p) => p.username === args.username);
+      if (postData.length === 0) {
+        throw new GraphQLError('User has no posts', { extensions: { code: 'BAD_USER_INPUT' } });
       }
       return postData;
     },
-    getPost: async (parent, {postId}, context) => {
+
+    getPost: async (_, { postId }) => {
       const postData = await Post.findById(postId);
-      if(!postData){
-        throw new Error('Post not found');
+      if (!postData) {
+        throw new GraphQLError('Post not found', { extensions: { code: 'BAD_USER_INPUT' } });
       }
       return postData;
-    }
+    },
   },
+
   Mutation: {
-    //create user data
-    register: async (parents, {
-      registerInput: { username, email, password}
-    }, context) => {
-      // Validate user data
-      const { valid, errors } = validateRegisterInput(
-        username,
-        email,
-        password
-      );
+    // create user
+    register: async (
+      _,
+      { registerInput: { username, email, password } },
+    ) => {
+      const { valid, errors } = validateRegisterInput(username, email, password);
       if (!valid) {
-        throw new UserInputError('Errors', { errors });
+        throw new GraphQLError('Validation errors', {
+          extensions: { code: 'BAD_USER_INPUT', errors },
+        });
       }
-      const checkUser = await User.findOne({username});
-      if(checkUser){
-        throw new UserInputError('Username is taken', {
-          errors: {username: 'This username is taken'}
-        })
+
+      const existing = await User.findOne({ username });
+      if (existing) {
+        throw new GraphQLError('Username is taken', {
+          extensions: { code: 'BAD_USER_INPUT', errors: { username: 'This username is taken' } },
+        });
       }
-      if(password.length < 6){
-        throw new UserInputError('Password too short', {
-          errors: {password: 'Password must be at least 6 characters'}
-        })
+
+      if (typeof password !== 'string' || password.length < 6) {
+        throw new GraphQLError('Password too short', {
+          extensions: { code: 'BAD_USER_INPUT', errors: { password: 'Password must be at least 6 characters' } },
+        });
       }
+
       const user = await User.create({
-        email, 
-        username, 
-        password, 
-        createdAt: new Date().toISOString()
+        email,
+        username,
+        password,
+        createdAt: new Date().toISOString(),
       });
+
       const token = signToken(user);
-      return {token, user};
+      return { token, user };
     },
 
-    login: async (_, {username, password}) => {
-      //check if username already exists
-      const { errors, valid } = validateLoginInput(username, password); 
-
+    login: async (_, { username, password }) => {
+      const { errors, valid } = validateLoginInput(username, password);
       if (!valid) {
-        throw new UserInputError('Errors', { errors });
+        throw new GraphQLError('Validation errors', { extensions: { code: 'BAD_USER_INPUT', errors } });
       }
 
-      const user = await User.findOne({username});
-
-      if (!user || user === '') {
+      const user = await User.findOne({ username });
+      if (!user) {
         errors.general = 'User not found';
-        throw new UserInputError('User not found', { errors });
+        throw new GraphQLError('User not found', { extensions: { code: 'BAD_USER_INPUT', errors } });
       }
-      //check if password matches
+
       const match = await user.isCorrectPassword(password);
       if (!match) {
-        errors.general = 'Wrong crendetials';
-        throw new UserInputError('Wrong crendetials', { errors });
+        errors.general = 'Wrong credentials';
+        throw new GraphQLError('Wrong credentials', { extensions: { code: 'BAD_USER_INPUT', errors } });
       }
 
       const token = signToken(user);
-      return {token, user};
+      return { token, user };
     },
 
-    destroyUser: async (parents, args) => {
-      //todo delete user
+    destroyUser: async () => {
+      // implement if needed
+      throw new GraphQLError('Not implemented', { extensions: { code: 'NOT_IMPLEMENTED' } });
     },
 
-    addPost: async (parents, { body, username }, context) => {
-      if(context.user){
-        if(body.trim() === ''){
-          throw new Error('Body must not be empty');
-        }
-  
-        const newPost = new Post({
-          body,
-          user: context.user.id,
-          username: context.user.username,
-          createdAt: new Date().toISOString()
+    addPost: async (_, { body }, context) => {
+      if (!context.user) {
+        throw new GraphQLError('Not Authenticated!', { extensions: { code: 'UNAUTHENTICATED' } });
+      }
+      if (typeof body !== 'string' || body.trim() === '') {
+        throw new GraphQLError('Body must not be empty', { extensions: { code: 'BAD_USER_INPUT' } });
+      }
+
+      const newPost = new Post({
+        body,
+        user: context.user.id,
+        username: context.user.username,
+        createdAt: new Date().toISOString(),
+      });
+
+      const post = await newPost.save();
+      return post;
+    },
+
+    deletePost: async (_, { postId }, context) => {
+      if (!context.user) {
+        throw new GraphQLError('Invalid Token', { extensions: { code: 'UNAUTHENTICATED' } });
+      }
+
+      const postData = await Post.findById(postId);
+      if (!postData) {
+        throw new GraphQLError('Post not found', { extensions: { code: 'BAD_USER_INPUT' } });
+      }
+
+      if (context.user.username !== postData.username) {
+        throw new GraphQLError('Action not allowed', { extensions: { code: 'FORBIDDEN' } });
+      }
+
+      await postData.deleteOne();
+      return 'Post deleted successfully';
+    },
+
+    submitComment: async (_, { postId, body }, context) => {
+      if (!context.user) {
+        throw new GraphQLError('Not Authenticated!', { extensions: { code: 'UNAUTHENTICATED' } });
+      }
+      if (typeof body !== 'string' || body.trim() === '') {
+        throw new GraphQLError('Empty Comment', {
+          extensions: { code: 'BAD_USER_INPUT', errors: { body: 'Body must not be empty' } },
         });
-  
-        const post = await newPost.save();
-  
-        return post;
-      } 
-      throw new AuthenticationError('Not Authenticated!');
-    },
-    
-    deletePost: async (parents, { postId }, context) => {
-      if(context.user){
-        const postData = await Post.findById(postId);
-        if(context.user.username === postData.username){
-          await postData.delete();
-          return 'Post deleted successfully';
-        } else {
-          throw new AuthenticationError('Action not allowed');
-        }
       }
-      throw new AuthenticationError('Invalid Token');
-    },
-    submitComment: async(_, { postId, body }, context) => {
-      if(context.user){
-        if (body.trim() === '') {
-          throw new UserInputError('Empty Comment', {
-            errors: {
-              body: 'Body must not empty'
-            }
-          });
-        }
 
-        const comData = await Post.findById(postId);
-        const {username} = context.user;
-
-        if(comData) {
-          comData.comments.unshift({
-            body,
-            username,
-            createdAt: new Date().toISOString()
-          });
-          await comData.save();
-          return comData;
-        } else throw new UserInputError('Post not found');
+      const comData = await Post.findById(postId);
+      if (!comData) {
+        throw new GraphQLError('Post not found', { extensions: { code: 'BAD_USER_INPUT' } });
       }
-      throw new AuthenticationError('Not Authenticated!')
+
+      const { username } = context.user;
+      comData.comments.unshift({
+        body,
+        username,
+        createdAt: new Date().toISOString(),
+      });
+      await comData.save();
+      return comData;
     },
-    deleteComment: async(_, { postId, commentId }, context) => {
-      if(context.user){
-        const {username} = context.user;
-        const comData = await Post.findById(postId);
 
-        if(comData){
-          const comIndex = comData.comments.findIndex(c => c.id === commentId);
-
-          if(comData.comments[comIndex].username === username){
-            comData.comments.splice(comIndex, 1);
-            await comData.save();
-            return comData;
-          } else throw new AuthenticationError('Action Not Allowed!')
-        }
-        throw new UserInputError('Comment not found');
+    deleteComment: async (_, { postId, commentId }, context) => {
+      if (!context.user) {
+        throw new GraphQLError('Not Authenticated!', { extensions: { code: 'UNAUTHENTICATED' } });
       }
-      throw new AuthenticationError('Not Authenticated!')
-    },
-    likePost: async(_, { postId }, context) => {
-      if(context.user){
-        const { username } = context.user;
-        const postData = await Post.findById(postId);
-        if(postData){
-          if(postData.likes.find(like => like.username === username )){
-            // Post already likes, unlike it
-            postData.likes = postData.likes.filter((like) => like.username !== username);
-          } else {
-            // Not liked, like post
-            postData.likes.push({
-              username,
-              createdAt: new Date().toISOString()
-            });
-          }
 
-          await postData.save();
-          return postData;
-        } else throw new UserInputError('Post not found');
+      const { username } = context.user;
+      const comData = await Post.findById(postId);
+      if (!comData) {
+        throw new GraphQLError('Post not found', { extensions: { code: 'BAD_USER_INPUT' } });
       }
-      throw new AuthenticationError('Not Authenticated!')
+
+      const comIndex = comData.comments.findIndex((c) => c.id === commentId);
+      if (comIndex === -1) {
+        throw new GraphQLError('Comment not found', { extensions: { code: 'BAD_USER_INPUT' } });
+      }
+
+      if (comData.comments[comIndex].username !== username) {
+        throw new GraphQLError('Action Not Allowed!', { extensions: { code: 'FORBIDDEN' } });
+      }
+
+      comData.comments.splice(comIndex, 1);
+      await comData.save();
+      return comData;
     },
-    addFriend: async (parents, args) => {},
-    removeFriend: async (parents, args) => {},
-    saveProfileImage: async (parents, {user_id, url}) => {
-      const userData = await User.findOneAndUpdate({id: user_id}, {profileImgUrl: url});
+
+    likePost: async (_, { postId }, context) => {
+      if (!context.user) {
+        throw new GraphQLError('Not Authenticated!', { extensions: { code: 'UNAUTHENTICATED' } });
+      }
+
+      const { username } = context.user;
+      const postData = await Post.findById(postId);
+      if (!postData) {
+        throw new GraphQLError('Post not found', { extensions: { code: 'BAD_USER_INPUT' } });
+      }
+
+      const existing = postData.likes.find((like) => like.username === username);
+      if (existing) {
+        // Unlike
+        postData.likes = postData.likes.filter((like) => like.username !== username);
+      } else {
+        // Like
+        postData.likes.push({ username, createdAt: new Date().toISOString() });
+      }
+
+      await postData.save();
+      return postData;
+    },
+
+    addFriend: async () => {
+      throw new GraphQLError('Not implemented', { extensions: { code: 'NOT_IMPLEMENTED' } });
+    },
+
+    removeFriend: async () => {
+      throw new GraphQLError('Not implemented', { extensions: { code: 'NOT_IMPLEMENTED' } });
+    },
+
+    saveProfileImage: async (_, { user_id, url }) => {
+      const userData = await User.findOneAndUpdate({ id: user_id }, { profileImgUrl: url });
       return userData;
     },
-  }
+  },
 };
 
-module.exports = resolvers;
+export default resolvers;

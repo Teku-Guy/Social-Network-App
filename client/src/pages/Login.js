@@ -1,4 +1,3 @@
-
 import React, { useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
 import { Box, Button, FormControl, FormHelperText, Grid, Input, InputLabel } from "@mui/material";
@@ -16,7 +15,7 @@ function Login(props) {
     password: ''
   });
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [loginUser] = useMutation(LOGIN_USER, {
     update(_, 
       {
         data: {login: userData}
@@ -25,7 +24,7 @@ function Login(props) {
       context.login(userData);
     },
     onError(err) {
-			setErrors(err.graphQLErrors[0].extensions.errors);
+            setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values
   });

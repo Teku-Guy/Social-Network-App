@@ -1,25 +1,20 @@
-const { Schema, model, Types } = require('mongoose');
+import mongoose from 'mongoose';
 
-//Comment Schema
+const { Schema } = mongoose;
+
 const CommentSchema = new Schema(
-    {
-      body: {
-          type: String,
-          required: true,
-          //280 character maximum
-          maxLength: [280, 'Max characters of 280 is allowed.']
-      },
-      //username
-      username: String,
-      createdAt: {
-          type: String
-      },
+  {
+    body: {
+      type: String,
+      required: true,
+      maxLength: [280, 'Max characters of 280 is allowed.'],
     },
-    {
-      toJSON: {
-          getters: true
-      }
-    }    
+    username: String,
+    createdAt: String,
+  },
+  {
+    toJSON: { getters: true },
+  }
 );
 
-module.exports = CommentSchema;
+export default CommentSchema;

@@ -1,13 +1,16 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
+mongoose.set('strictQuery', false); // or false, depending on your preference
 mongoose.connect(
   process.env.MONGODB_URI || 'mongodb://localhost/media-base',
   {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     // useCreateIndex: true,
     // useFindAndModify: false,
   }
 );
 
-module.exports = mongoose.connection;
+export default mongoose.connection;

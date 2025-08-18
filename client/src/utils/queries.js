@@ -6,10 +6,8 @@ export const FETCH_ALL_POSTS_QUERY = gql`
       id
       body
       createdAt
-      user{
-        username
-        profileImgUrl
-      }
+      username
+      profileImgUrl
       likeCount
       likes {
         username
@@ -31,10 +29,8 @@ export const FETCH_POST_QUERY = gql`
       id
       body
       createdAt
-      user{
-        username
-        profileImgUrl
-      }
+      username
+      profileImgUrl
       likeCount
       likes{
         username
@@ -68,10 +64,7 @@ export const FETCH_USER_POSTS_QUERY = gql`
       body
       createdAt
       likeCount
-      user{
-        username
-        profileImgUrl
-      }
+      username
       likes{
         username
       }
