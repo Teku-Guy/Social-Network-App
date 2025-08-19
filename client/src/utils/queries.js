@@ -65,6 +65,7 @@ export const FETCH_USER_POSTS_QUERY = gql`
       createdAt
       likeCount
       username
+      profileImgUrl
       likes{
         username
       }
@@ -75,6 +76,15 @@ export const FETCH_USER_POSTS_QUERY = gql`
         createdAt
         body
       }
+    }
+  }
+`;
+
+export const FETCH_USER_AVATAR_QUERY = gql`
+  query GetUserAvatar($username: String) {
+    getUser(username: $username) {
+      username
+      profileImgUrl
     }
   }
 `;

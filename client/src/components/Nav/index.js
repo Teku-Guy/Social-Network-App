@@ -20,6 +20,8 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import Auth from '../../utils/auth';
 import { AuthContext } from '../../utils/AuthContext';
+import { useQuery } from '@apollo/client';
+import { FETCH_USER_AVATAR_QUERY } from '../../utils/queries';
 
 const navItems  = [ {title:'Login', value: 1}, {title:'Register', value: 2} ];
 
@@ -45,15 +47,24 @@ function Nav(props) {
     setAnchorEl(null);
   };
 
+  // Fetch latest avatar to keep navbar up-to-date
+  const { data } = useQuery(FETCH_USER_AVATAR_QUERY, {
+    variables: { username: user?.data.username },
+    skip: !user?.data.username,
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  });
+
+  const avatarData = {...data};
+  
+
+  const avatarUrl = avatarData?.getUser?.profileImgUrl || user.data.profileImgUrl || '';
   const profile = () => {
     window.location.assign(`/user/${user.data.username}`);
   };
   const settings = () => {
     window.location.assign('/settings');
   };
-  debugger
-  console.log(user)
-  debugger
   
   const navBar = user ? (
     <Container maxWidth="xl" sx={{ p:3 }}>
@@ -81,7 +92,7 @@ function Nav(props) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Avatar alt="Remy Sharp" src={user.data.profileImgUrl} />
+                <Avatar alt="Remy Sharp" src={avatarUrl} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -128,7 +139,7 @@ function Nav(props) {
                 {user.data.username}
               </MenuItem>
               <MenuItem key='Profile' onClick={profile}>
-                <Avatar /> Profile
+                <Avatar src={avatarUrl} /> Profile
               </MenuItem>
               <MenuItem key='Account' onClick={settings}>
                 <ListItemIcon>

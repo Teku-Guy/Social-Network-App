@@ -15,10 +15,9 @@ function PostCard({
   // Current logged-in user from context (may be undefined)
   const { user: currentUser } = useContext(AuthContext) || {};
 
-  console.log(body);
   // Support both shapes: nested `user` OR flattened fields on Post
   const authorUsername = user?.username ?? username ?? 'Unknown';
-  const authorAvatar = user?.profileImgUrl ?? profileImgUrl ?? '/default-avatar.png';
+  const authorAvatar = user?.profileImgUrl ?? profileImgUrl ?? '';
 
   const toComment = () => {
     window.location.assign(`/posts/${id}`);

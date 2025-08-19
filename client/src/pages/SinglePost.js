@@ -115,7 +115,7 @@ function SinglePost() {
                       <ChatBubbleOutlineIcon />
                     </IconButton>
                   </Badge>
-                  {user && user.username === username && (
+                  {user && user.data.username === username && (
                     <DeleteButton postId={id} callback={deletePostCallback}/>
                   )}
                 </CardActions>
@@ -158,7 +158,7 @@ function SinglePost() {
                       title={`${comment.username}`}
                       subheader={`${moment(comment.createdAt).fromNow()}`}
                       action={
-                        user && user.username === comment.username && (
+                        user && user.data.username === comment.username && (
                           <DeleteButton
                             postId={id}
                             commentId={comment.id}
