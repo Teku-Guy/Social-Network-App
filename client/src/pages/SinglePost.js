@@ -96,11 +96,11 @@ function SinglePost() {
       postMarkup = (
         <Container maxWidth="xl" sx={{ p:10 }}>
         <Grid container spacing={2}>
-          <Grid item lg={2}>
+          <Grid size={{ lg: 2 }}>
             <Avatar alt={`${username}`} src={profileImgUrl} sx={{ width: 200, height: 200 }}/>
           </Grid>
-            <Grid item lg={10}>
-              <Card sx={{ mb:2.5}}>
+            <Grid size={{ lg: 10 }}>
+              <Card size={{ mb:2.5 }}>
                 <CardHeader title={`${username}`}  subheader={moment(createdAt).fromNow()}/>
                 <CardContent disablespacing="true">
                   <Typography variant="body1">

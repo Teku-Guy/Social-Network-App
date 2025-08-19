@@ -10,21 +10,21 @@ import { Container } from "@mui/material";
 
 function Home() {
   const user = Auth.loggedIn();
-  const { loading, data, error, refetch } = useQuery(FETCH_ALL_POSTS_QUERY, { fetchPolicy: 'network-only' });
+  const { loading, data, error } = useQuery(FETCH_ALL_POSTS_QUERY, { fetchPolicy: 'network-only' });
   console.log(data)
   const { getPosts: posts } = {...data};
   console.log(posts);
 
   let content;
   if (loading) {
-    content = <h1>Loading posts..</h1>;
+    content = <h2>Loading posts..</h2>;
   } else if (error) {
     content = <h2 style={{ color: 'crimson' }}>Failed to load posts</h2>;
   } else {
     content = (
       <>
         {posts.map((post) => (
-          <Grid item xs={12} sm={6} md={4} xl={3} key={post.id} style={{ marginBottom: 20 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, xl: 3 }} key={post.id} style={{ marginBottom: 20 }}>
             <PostCard post={post} />
           </Grid>
         ))}
@@ -35,12 +35,12 @@ function Home() {
   return (
     <Container maxWidth="xl" sx={{ p:3 }}>
       <Grid container spacing={2}>
-        <Grid item xs={12} className="page-title">
+        <Grid size={{ xs: 12 }} className="page-title">
           <h1>Recent Posts</h1>
         </Grid>
         <Grid  container spacing={4} p={2.5} >
           {user && (
-            <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 4, xl: 3 }}>
               <PostForm />
             </Grid>
           )}

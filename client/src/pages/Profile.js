@@ -69,18 +69,18 @@ function Profile(){
         >
           <Box component="section" py={{ xs:6, sm:12 }}>
             <Container>
-              <Grid item xs={12} justifyContent="center" mx="auto">
+              <Grid size={{ xs: 12 }} justifyContent="center" mx="auto">
                 <Box mt={{ xs: -16, md: -20 }} textAlign="center">
                   <Avatar src={profileImgUrl} alt={`${username}`} sx={{ width: "110px", height: "110px", fontSize: "1rem" }} />
                 </Box>
                 <Grid container justifyContent="center" py={6}>
-                  <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md:1 }}>
+                  <Grid size={{ xs: 12, md: 7 }} mx={{ xs: "auto", sm: 6, md:1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                     <Typography variant="h3">{username}</Typography>
                     {checkUser()}
                   </Box>
                   <Grid container spacing={3} mb={3}>
-                    <Grid item>
+                    <Grid>
                       <Typography component="span" variant="body2" fontWeight="bold">
                         {Object.keys(posts || {}).length} &nbsp;
                       </Typography>
@@ -88,7 +88,7 @@ function Profile(){
                         Posts
                       </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid>
                       <Typography component="span" variant="body2" fontWeight="bold">
                         {0}&nbsp;
                       </Typography>
@@ -96,7 +96,7 @@ function Profile(){
                         Followers
                       </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid>
                       <Typography component="span" variant="body2" fontWeight="bold">
                         {0}&nbsp;
                       </Typography>
@@ -120,8 +120,8 @@ function Profile(){
               ) : (
                 <Grid  container spacing={4} p={2.5} >
                   {
-                    posts && posts.map((post) => (
-                      <Grid item xs={12} sm={6} md={4} key={post.id} style={{ marginBottom: 20 }}>
+                    posts?.map((post) => (
+                      <Grid size={{ xs: 12, sm: 6, md: 4 }} key={post.id} style={{ marginBottom: 20 }}>
                         <PostCard post={post} />
                       </Grid>
                     ))
