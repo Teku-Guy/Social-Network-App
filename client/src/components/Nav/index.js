@@ -49,24 +49,29 @@ function Nav(props) {
 
   // Fetch latest avatar to keep navbar up-to-date
   const { data } = useQuery(FETCH_USER_AVATAR_QUERY, {
-    variables: { username: user?.data.username },
-    skip: !user?.data.username,
+    variables: { username: (user?.username ?? user?.data?.username) },
+    skip: !(user?.username ?? user?.data?.username),
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   });
 
-  const avatarData = {...data};
-  
-
-  const avatarUrl = avatarData?.getUser?.profileImgUrl || user.data.profileImgUrl || '';
+  const avatarUrl =
+    data?.getUser?.profileImgUrl ||
+    user?.profileImgUrl ||
+    user?.data?.profileImgUrl ||
+    '';
+  const currentUsername = user?.username ?? user?.data?.username;
   const profile = () => {
-    window.location.assign(`/user/${user.data.username}`);
+    if (currentUsername) window.location.assign(`/user/${currentUsername}`);
   };
   const settings = () => {
     window.location.assign('/settings');
   };
+
+  console.log(data);
   
-  const navBar = user ? (
+  const isAuthed = !!(user && (user.username || user.data?.username));
+  const navBar = isAuthed ? (
     <Container maxWidth="xl" sx={{ p:3 }}>
     <AppBar component="nav">
       <Toolbar>
@@ -136,7 +141,7 @@ function Nav(props) {
                 <ListItemIcon>
                   <PersonIcon fontSize="small" />
                 </ListItemIcon>
-                {user.data.username}
+                {currentUsername}
               </MenuItem>
               <MenuItem key='Profile' onClick={profile}>
                 <Avatar src={avatarUrl} /> Profile

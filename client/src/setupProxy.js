@@ -6,8 +6,7 @@ module.exports = function (app) {
     ['/graphql', '/healthz'],
     createProxyMiddleware({
       target: 'http://localhost:4000',
-      changeOrigin: true,
-      ws: true,
+      changeOrigin: true
     })
   );
 };

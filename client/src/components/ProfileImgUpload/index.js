@@ -22,7 +22,6 @@ const ProfileImgUpload = (props) => {
       username: user.data.username
     }
   });
-  console.log(data)
 
   const uploadImageWidget = () => {
     let myUploadWidget = openUploadWidget(

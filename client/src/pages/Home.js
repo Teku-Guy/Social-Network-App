@@ -11,9 +11,7 @@ import { Container } from "@mui/material";
 function Home() {
   const user = Auth.loggedIn();
   const { loading, data, error } = useQuery(FETCH_ALL_POSTS_QUERY, { fetchPolicy: 'network-only' });
-  console.log(data)
   const { getPosts: posts } = {...data};
-  console.log(posts);
 
   let content;
   if (loading) {

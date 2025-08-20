@@ -1,7 +1,7 @@
 
 import React, { useState, useContext} from "react";
 import { useMutation } from "@apollo/client";
-import { Box, Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel } from "@mui/material";
+import { Box, Button, Container, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 
 import { REGISTER_USER } from "../utils/mutations";
 import { useForm } from "../utils/helpers";
@@ -13,11 +13,11 @@ function Register() {
 
 	const { onChange, onSubmit, values } = useForm(registerUser, {
 		username: '',
-    email: '',
-    password: ''
-  });
+		email: '',
+		password: ''
+  	});
 
-	const [addUser, { loading }] = useMutation(REGISTER_USER, {
+	const [addUser] = useMutation(REGISTER_USER, {
 		update(_, { data: {register: userData} }){
 			context.login(userData);
 		},
@@ -32,105 +32,80 @@ function Register() {
 	}
 
 	return (
-		<Container maxWidth="md" sx={{ p:3 }}>
-		<Grid container sx={{
-			display: "flex",
-    	flexDirection: "column",
-    	alignItems: "center"}}
-		>
-			<Box
-				component={'form'}
-				onSubmit={onSubmit}
-				noValidate
-				autoComplete="off"
-				sx={{ p: 2}}
-			>
-				<h1>Register</h1>
-				<FormControl
-					error={ errors.username? true : false }
-					fullWidth
-					margin="normal"
-					variant="standard"
-				>
-					<InputLabel htmlFor="username">
-						Username
-					</InputLabel>
-					<Input
-						placeholder="Username.."
-						name="username"
-						type="text"
-						value={values.username}
-						error={ errors.username? true : false }
-						onChange={onChange}
-					/>
-					{ 
-						errors.username ? (
-							<FormHelperText id="error-username">
-								{errors.username}
-							</FormHelperText>
-						) : (<></>)
-					}
-				</FormControl>
-				<FormControl 
-						error={ errors.email? true : false } 
-						fullWidth 
-						margin="normal" 
-						variant="standard"
-				>
-					<InputLabel htmlFor="email">
-						Email
-          </InputLabel>
-					<Input
-						placeholder="Email.."
-						name="email"
-						type="email"
-						value={values.email}
-						error={ errors.email? true : false }
-						onChange={onChange}
-					/>
-					{ 
-						errors.email ? (
-							<FormHelperText id="error-email">
-								{errors.email}
-							</FormHelperText>
-						) : (<></>)
-					}
-				</FormControl>
-				<FormControl
-					error={ errors.password? true : false }
-					fullWidth
-					margin="normal"
-					variant="standard"
-				>
-					<InputLabel htmlFor="password">
-						Password
-          </InputLabel>
-					<Input
-						placeholder="Password.."
-						name="password"
-						type="password"
-						value={values.password}
-						error={ errors.password? true : false }
-						onChange={onChange}
-					/>
-					{ 
-						errors.password ? (
-							<FormHelperText id="error-password">
-								{errors.password}
-							</FormHelperText>
-						) : (<></>)
-					}
-				</FormControl>
-				<Button
-          disableRipple
-          fullWidth
-          variant="contained"
-          type="submit"
-        >
-					Join
-				</Button>
-			</Box>
-		</Grid>
+		<Container maxWidth="md" sx={{ p: 3 }}>
+			<Grid container sx={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center"
+			}} grow>
+				<Paper elevation={3} sx={{ p: 3, minWidth: 350 }}>
+					<Box
+						component={'form'}
+						onSubmit={onSubmit}
+						noValidate
+						autoComplete="off"
+						sx={{ p: 2 }}
+					>
+						<Typography variant="h4" align="center" gutterBottom>
+							Register
+						</Typography>
+						<Stack spacing={2} sx={{ mt: 1 }}>
+							<TextField
+								id="username"
+								label="Username"
+								name="username"
+								placeholder="Username.."
+								value={values.username}
+								onChange={onChange}
+								fullWidth
+								variant="standard"
+								error={Boolean(errors?.username)}
+								helperText={errors?.username || ''}
+								autoComplete="username"
+							/>
+
+							<TextField
+								id="email"
+								label="Email"
+								name="email"
+								placeholder="Email.."
+								type="email"
+								value={values.email}
+								onChange={onChange}
+								fullWidth
+								variant="standard"
+								error={Boolean(errors?.email)}
+								helperText={errors?.email || ''}
+								autoComplete="email"
+							/>
+
+							<TextField
+								id="password"
+								label="Password"
+								name="password"
+								placeholder="Password.."
+								type="password"
+								value={values.password}
+								onChange={onChange}
+								fullWidth
+								variant="standard"
+								error={Boolean(errors?.password || errors?.general)}
+								helperText={errors?.password || errors?.general || ''}
+								autoComplete="current-password"
+							/>
+						</Stack>
+						<Button
+							disableRipple
+							fullWidth
+							variant="contained"
+							type="submit"
+							sx={{ mt: 3 }}
+						>
+							Join
+						</Button>
+					</Box>
+				</Paper>
+			</Grid>
 		</Container>
 	);
 }

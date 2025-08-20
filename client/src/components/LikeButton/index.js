@@ -4,13 +4,14 @@ import { IconButton } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Badge from '@mui/material/Badge';
+import PropTypes from 'prop-types';
 
 import { LIKE_POST_MUTATION } from '../../utils/mutations';
 
 function LikeButton( { user, post: { id, likeCount, likes}} ){
   const [liked, setLiked] = useState(false);
   useEffect(() => {
-    if(user && likes.find(like => like.username === user.username)){
+    if(user && likes.find(like => like.username === user.data.username)){
       setLiked(true)
     } else setLiked(false);
   }, [user, likes]);
@@ -23,21 +24,26 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
     window.location.assign('/login');
   }
 
-  const likeButton = user ? (
-    liked ? (
-      <IconButton onClick={likePost}>
-          <FavoriteIcon />
+  let likeButton;
+  if (!user) {
+    likeButton = (
+      <IconButton onClick={login}>
+        <FavoriteBorderIcon />
       </IconButton>
-    ) : (
+    );
+  } else if (liked) {
+    likeButton = (
       <IconButton onClick={likePost}>
-          <FavoriteBorderIcon />
+        <FavoriteIcon />
       </IconButton>
-    )
-  ): (
-    <IconButton onClick={login}>
-      <FavoriteBorderIcon />
-    </IconButton>
-  )
+    );
+  } else {
+    likeButton = (
+      <IconButton onClick={likePost}>
+        <FavoriteBorderIcon />
+      </IconButton>
+    );
+  }
 
   return (
       <Badge showZero badgeContent={likeCount} color="primary">
@@ -45,5 +51,21 @@ function LikeButton( { user, post: { id, likeCount, likes}} ){
       </Badge>
   );
 }
+LikeButton.propTypes = {
+  user: PropTypes.shape({
+    data: PropTypes.shape({
+      username: PropTypes.string.isRequired
+    }).isRequired
+  }),
+  post: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    likeCount: PropTypes.number.isRequired,
+    likes: PropTypes.arrayOf(
+      PropTypes.shape({
+        username: PropTypes.string.isRequired
+      })
+    ).isRequired
+  }).isRequired
+};
 
 export default LikeButton;
